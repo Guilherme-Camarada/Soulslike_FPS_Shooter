@@ -1,0 +1,86 @@
+using DG.Tweening;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
+using UnityEditor;
+using UnityEngine;
+
+public class CameraFOVChanger : MonoBehaviour
+{
+    [Header("References")]
+    [SerializeField] private GameInput _gameInput;
+    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private CinemachineCamera _cinemachineCamera;
+
+    [Header("FOV Sprint Settings")]
+    [SerializeField] private float _defaultFOV = 60f;
+    [SerializeField] private float _sprintFOV = 70f;
+    [SerializeField] private float _sprintFOVChangeDuration = 0.5f;
+
+    [Header("FOV Dash Settings")]
+    [SerializeField] private float _dashFOV = 80f;
+    [SerializeField] private float _dashPunchDuration = 0.1f;
+    [SerializeField] private float _dashRecoveryDuration = 0.4f;
+
+    private Tween _currentFOVTween;
+
+
+    private void OnEnable()
+    {
+        _playerMovement.OnDashAction += PlayerMovement_OnDashAction;
+        _gameInput.OnSprintStartAction += GameInput_OnSprintStartAction;
+        _gameInput.OnSprintCancelAction += GameInput_OnSprintCancelAction;
+    }
+
+    private void GameInput_OnSprintCancelAction()
+    {
+        if (_cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
+        {
+            ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
+        }
+    }
+
+    private void GameInput_OnSprintStartAction()
+    {
+        if (_cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
+        {
+            ApplyFOVChange(_sprintFOV, _sprintFOVChangeDuration, Ease.InOutSine);
+        }
+    }
+
+    private void PlayerMovement_OnDashAction(bool isDashing)
+    {
+        if (isDashing)
+        {
+            ApplyFOVChange(_dashFOV, _dashPunchDuration, Ease.InOutSine);
+        } else
+        {
+            float targetFOV = _playerMovement.IsSprinting() ? _sprintFOV : _defaultFOV;
+            ApplyFOVChange(targetFOV, _dashRecoveryDuration, Ease.InOutSine);
+        }
+    }
+
+    private void OnDisable()
+    {
+        _playerMovement.OnDashAction -= PlayerMovement_OnDashAction;
+        _gameInput.OnSprintStartAction -= GameInput_OnSprintStartAction;
+        _gameInput.OnSprintCancelAction -= GameInput_OnSprintCancelAction;  
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        _cinemachineCamera.Lens.FieldOfView = _defaultFOV;
+    }
+
+
+    private void ApplyFOVChange(float value, float duration, Ease easeType)
+    {
+        _currentFOVTween?.Kill();
+
+        _currentFOVTween = DOTween.To(
+            () => _cinemachineCamera.Lens.FieldOfView, 
+            x => _cinemachineCamera.Lens.FieldOfView = x, value, duration)
+            .SetEase(easeType);
+    }
+
+}

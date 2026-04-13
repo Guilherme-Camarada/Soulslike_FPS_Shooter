@@ -1,2 +1,2 @@
-# Soulslike_FPS_Shooter
-A project where soulslike elements mix with fps shooter mechanics
+# Shooter_Prototype
+A prototype to learn the implementation of various mechanics from the fps genre.
