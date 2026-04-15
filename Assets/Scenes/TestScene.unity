@@ -8262,9 +8262,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
   _gameInput: {fileID: 1856674200}
   _startingEquippables:
-  - {fileID: 6599905045066193390, guid: 6c2676f51af0da346adcd858b6d5bb46, type: 3}
-  - {fileID: 8660353217748235326, guid: be801ed3b405a5c4da557d66a3813bb1, type: 3}
-  - {fileID: 9012193225803009924, guid: d0a75972d3df2a04493f24e93c0b5a2d, type: 3}
+  - {fileID: 4404235183777926556, guid: 6921ad5cf91dffb43b419b411e8b51b9, type: 3}
+  - {fileID: 4884522133073620702, guid: af7bc0daf72444444a4546255ec4d56d, type: 3}
+  - {fileID: 1970521035041035894, guid: a9696dbafa42d6e449624519cee9781c, type: 3}
   _maxEquippables: 4
   _oneHandedSlotTransform: {fileID: 5432427467979087628}
   _twoHandedSlotTransform: {fileID: 6451486236052295701}
