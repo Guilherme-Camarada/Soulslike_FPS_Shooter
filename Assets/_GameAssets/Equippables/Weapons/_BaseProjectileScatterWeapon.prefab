@@ -476,13 +476,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07536954077997f4eaf5858768c279f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileScatterRangedWeapon
-  _equippableType: 0
+  _equippableType: 1
   _weaponFireMode: 0
   _fireRateCooldown: 0.4
   _reloadCooldown: 2
   _totalAmmo: 15
-  _range: 50
-  _damage: 10
   _mouseLook: {fileID: 0}
   _recoilAmountY: 3
   _recoilAmountX: 1

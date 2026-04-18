@@ -23,6 +23,8 @@ public abstract class RangedWeapon : Equippable
     [SerializeField] private float _snappiness = 10f;
     [SerializeField] private float _recoilRecoverySpeed = 2f;
 
+
+
     private int _currentAmmo;
     public int CurrentAmmo => _currentAmmo;
     public int TotalAmmo => _totalAmmo;

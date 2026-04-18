@@ -8,6 +8,9 @@ public class RaycastScatterRangedWeapon : RangedWeapon
     [SerializeField] private float _scatterSpreadAngle = 15f;
     [SerializeField] private int _scatterPelletCount = 10;
 
+    [Header("Hit Effects")]
+    [SerializeField] protected ParticleSystem _hitParticleSystem;
+
     public override bool Shoot()
     {
         if (base.Shoot())
@@ -29,6 +32,7 @@ public class RaycastScatterRangedWeapon : RangedWeapon
                 {
                     damageable.TakeDamage(damage);
                 }
+                Instantiate(_hitParticleSystem, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
             }
         }
     }

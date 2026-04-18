@@ -481,13 +481,16 @@ MonoBehaviour:
   _fireRateCooldown: 0.15
   _reloadCooldown: 2
   _totalAmmo: 28
-  _range: 50
-  _damage: 12
   _mouseLook: {fileID: 0}
   _recoilAmountY: 3
   _recoilAmountX: 2
   _snappiness: 10
   _recoilRecoverySpeed: 2
+  _range: 50
+  _damage: 12
+  _hitParticleSystem: {fileID: 8932642147871933981, guid: 2ded55d2f69f79f4288ab98538292168, type: 3}
+  _trailRenderer: {fileID: 4631700167549077124, guid: 20e4066834b886545b8bd2cbd586f73d, type: 3}
+  _muzzlePoint: {fileID: 35556169294422643}
 --- !u!114 &972910348635930082
 MonoBehaviour:
   m_ObjectHideFlags: 0

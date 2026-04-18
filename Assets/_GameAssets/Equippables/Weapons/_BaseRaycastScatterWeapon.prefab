@@ -5343,15 +5343,16 @@ MonoBehaviour:
   _fireRateCooldown: 0.4
   _reloadCooldown: 2
   _totalAmmo: 15
-  _range: 50
-  _damage: 10
   _mouseLook: {fileID: 0}
   _recoilAmountY: 3
   _recoilAmountX: 1
   _snappiness: 10
   _recoilRecoverySpeed: 2
+  _range: 50
+  _damagePerBullet: 10
   _scatterSpreadAngle: 15
   _scatterPelletCount: 10
+  _hitParticleSystem: {fileID: 8932642147871933981, guid: 2ded55d2f69f79f4288ab98538292168, type: 3}
 --- !u!114 &6847892224638948861
 MonoBehaviour:
   m_ObjectHideFlags: 0
