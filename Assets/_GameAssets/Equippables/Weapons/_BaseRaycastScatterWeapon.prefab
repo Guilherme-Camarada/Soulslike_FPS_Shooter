@@ -5338,7 +5338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c5677b000daff44fbf50fca25f0e21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaycastScatterRangedWeapon
-  _equippableType: 0
+  _equippableType: 1
   _weaponFireMode: 0
   _fireRateCooldown: 0.4
   _reloadCooldown: 2

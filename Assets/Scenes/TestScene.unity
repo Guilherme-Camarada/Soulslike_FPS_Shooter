@@ -8265,6 +8265,7 @@ MonoBehaviour:
   - {fileID: 4404235183777926556, guid: 6921ad5cf91dffb43b419b411e8b51b9, type: 3}
   - {fileID: 4884522133073620702, guid: af7bc0daf72444444a4546255ec4d56d, type: 3}
   - {fileID: 1970521035041035894, guid: a9696dbafa42d6e449624519cee9781c, type: 3}
+  - {fileID: 1851611798394919388, guid: 9cd1f2b8b214aff4f806e072c3b6903e, type: 3}
   _maxEquippables: 4
   _oneHandedSlotTransform: {fileID: 5432427467979087628}
   _twoHandedSlotTransform: {fileID: 6451486236052295701}
