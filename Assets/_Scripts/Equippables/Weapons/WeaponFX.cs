@@ -5,18 +5,16 @@ public class WeaponFX : MonoBehaviour
 {
     [Header("References")]
     private RangedWeapon _rangedWeapon;
-    private AudioSource _audioSource;
 
     [Header("VisualFX")]
     [SerializeField] protected ParticleSystem _muzzleFlashEffect;
 
     [Header("SoundFX")]
-    [SerializeField] protected AudioClip _fireSound;
-    [SerializeField] protected AudioClip _reloadSound;
+    [SerializeField] protected SoundData _fireSoundData;
+    [SerializeField] protected SoundData _reloadSoundData;
 
     private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
         _rangedWeapon = GetComponent<RangedWeapon>();
     }
 
@@ -28,12 +26,15 @@ public class WeaponFX : MonoBehaviour
 
     private void RangedWeapon_OnReloadAction(float cooldownTimer)
     {
-        if (_reloadSound  != null) 
+        if (_reloadSoundData  != null) 
         {
-            float requiredPitch = _reloadSound.length / cooldownTimer;
-            _audioSource.pitch = requiredPitch;
+            float requiredPitch = _reloadSoundData._audioClip.length / cooldownTimer;
 
-            _audioSource.PlayOneShot(_reloadSound);
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(_reloadSoundData)
+                .WithSetPitch(requiredPitch)
+                .WithPosition(transform.position)
+                .Play();
         }
     }
 
@@ -43,10 +44,12 @@ public class WeaponFX : MonoBehaviour
         {
             _muzzleFlashEffect.Play();
         }
-        if (_fireSound != null)
-        {
-            _audioSource.PlayOneShot(_fireSound);
-        }
+
+        SoundManager.Instance.CreateSound()
+            .WithSoundData( _fireSoundData)
+            .WithRandomPitch()
+            .WithPosition(transform.position)
+            .Play();    
     }
 
     private void OnDisable()

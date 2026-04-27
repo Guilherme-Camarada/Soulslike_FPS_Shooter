@@ -419,6 +419,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8425102542509183052, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: _fireSoundData._audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2203773368e4340d98c114f55c2dd7fd, type: 3}
+    - target: {fileID: 8425102542509183052, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: _fireSoundData._mixerGroup
+      value: 
+      objectReference: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
+    - target: {fileID: 8425102542509183052, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: _reloadSoundData._audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e5198250a6a57408bb36e14bc4a322c4, type: 3}
+    - target: {fileID: 8425102542509183052, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: _reloadSoundData._mixerGroup
+      value: 
+      objectReference: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 742997243956944960, guid: e53cecd9410477c488fd182a25932692, type: 3}

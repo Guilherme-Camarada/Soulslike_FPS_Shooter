@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 793668834598512094}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5145194709908063419}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!33 &5419901702908146511
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 1693600433269631941}
   - component: {fileID: 9116230246731109383}
   - component: {fileID: 8117465211944452383}
+  - component: {fileID: 1582360755585625523}
   m_Layer: 6
   m_Name: Rocket
   m_TagString: Untagged
@@ -117,7 +118,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5148520777494763767}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0.0029536244, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -174,7 +175,7 @@ CapsuleCollider:
   m_Radius: 0.038987458
   m_Height: 0.41338968
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -0.5347698}
+  m_Center: {x: 0, y: 0, z: 0.54}
 --- !u!114 &8117465211944452383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +188,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58827805772a64458653d9995806847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExplosiveProjectile
+  _soundData:
+    _audioClip: {fileID: 8300000, guid: aace4222f2cb7e34695be1cd173c395f, type: 3}
+    _mixerGroup: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
+    _loop: 0
+    _playOnAwake: 0
+    _volume: 1
   _explosionParticleSystem: {fileID: 19800006, guid: e0609132424a24844b1d53ad3d704fd9, type: 3}
   _explosionRadius: 4
   _damage: 20
+  _impulseSource: {fileID: 1582360755585625523}
+  _powerAmount: 0.3
+--- !u!114 &1582360755585625523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5148520777494763767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 3
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.35
+    ImpulseType: 0
+    DissipationRate: 0.25
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: -0.2, y: -0.2, z: -0.1}

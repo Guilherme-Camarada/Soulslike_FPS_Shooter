@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RaycastScatterRangedWeapon : RangedWeapon
+public class RaycastScatterRangedWeapon : RaycastRangedWeapon
 {
     [Header("Raycast Weapon Settings")]
     [SerializeField] protected float _range = 50f;
@@ -32,7 +32,9 @@ public class RaycastScatterRangedWeapon : RangedWeapon
                 {
                     damageable.TakeDamage(damage);
                 }
-                Instantiate(_hitParticleSystem, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+
+                TrailRenderer trail = Instantiate(_trailRenderer, _muzzlePoint.position, Quaternion.identity);
+                StartCoroutine(SpawnTrail(trail, hitInfo, _hitParticleSystem));
             }
         }
     }

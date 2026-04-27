@@ -13,10 +13,10 @@ public class PlayerFX : MonoBehaviour
     private PlayerMovement _playerMovement;
 
     [Header("AudioFX")]
-    [SerializeField] private AudioClip _jumpAudio;
-    [SerializeField] private AudioClip _landingAudio;
-    [SerializeField] private AudioClip _dashAudio;
-    [SerializeField] private AudioClip[] _footstepSounds;
+    [SerializeField] private SoundData _jumpAudioData;
+    [SerializeField] private SoundData _landingAudioData;
+    [SerializeField] private SoundData _dashAudioData;
+    [SerializeField] private SoundData[] _footstepSoundDataArray;
     [SerializeField] private float _walkStepInterval = 0.5f;
     [SerializeField] private float _sprintStepInterval = 0.3f;
 
@@ -47,8 +47,11 @@ public class PlayerFX : MonoBehaviour
     {
         if (timeInAir > 0.2f)
         {
-            _audioSource.pitch = Random.Range(0.9f, 1.1f);
-            _audioSource.PlayOneShot(_landingAudio);
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(_landingAudioData)
+                .WithRandomPitch()
+                .WithPosition(transform.position)
+                .Play();
         }
         
     }
@@ -63,8 +66,11 @@ public class PlayerFX : MonoBehaviour
 
         if (_isDashing)
         {
-            _audioSource.pitch = Random.Range(0.9f, 1.1f);
-            _audioSource.PlayOneShot(_dashAudio);
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(_dashAudioData)
+                .WithRandomPitch()
+                .WithPosition(transform.position)
+                .Play();
 
             if (chromaticAberration != null)
             {
@@ -105,10 +111,11 @@ public class PlayerFX : MonoBehaviour
 
     private void PlayerMovement_OnJumpAction()
     {
-        _audioSource.pitch = Random.Range(0.9f, 1.1f);
-        _audioSource.PlayOneShot(_jumpAudio);
-        
-        
+        SoundManager.Instance.CreateSound()
+                .WithSoundData(_jumpAudioData)
+                .WithRandomPitch()
+                .WithPosition(transform.position)
+                .Play();
     }
 
     private void OnDisable()
@@ -152,13 +159,15 @@ public class PlayerFX : MonoBehaviour
 
     private void PlayRandomFootstep()
     {
-        if (_footstepSounds.Length == 0) return;
+        if (_footstepSoundDataArray.Length == 0) return;
 
-        int randomIndex = Random.Range(0, _footstepSounds.Length);
-        AudioClip selectedStep = _footstepSounds[randomIndex];
+        int randomIndex = Random.Range(0, _footstepSoundDataArray.Length);
+        SoundData selectedStep = _footstepSoundDataArray[randomIndex];
 
-        _audioSource.pitch = Random.Range(0.85f, 1.15f);
-
-        _audioSource.PlayOneShot(selectedStep);
+        SoundManager.Instance.CreateSound()
+                .WithSoundData(selectedStep)
+                .WithRandomPitch()
+                .WithPosition(transform.position)
+                .Play();
     }
 }
