@@ -50,6 +50,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
   _equippableType: 1
   _damage: 15
+  _attackSpeedMultiplier: 1
+  _windupTime: 0.15
+  _strikeTime: 0.2
+  _recoveryTime: 0.25
 --- !u!114 &-6320308861329320098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,10 +66,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c833218bfeff8dc439f6c25fb1dbd26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponAnimation
-  _attackSpeedMultiplier: 1
-  _windupTime: 0.15
-  _strikeTime: 0.2
-  _recoveryTime: 0.25
   _windupRotation: {x: 0, y: 0, z: -90}
   _windupPosition: {x: 0, y: 0, z: 0}
   _windupEase: 4
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponFX
   _strikeEffect: {fileID: 0}
-  _hitEffect: {fileID: 0}
+  _hitEffect: {fileID: 8246836822317799282, guid: 0e0b05c61a4c57449864f5aaa152fa02, type: 3}
   _strikeSoundData:
     _audioClip: {fileID: 8300000, guid: 01999991d21504b5abb7a554bba05227, type: 3}
     _mixerGroup: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}

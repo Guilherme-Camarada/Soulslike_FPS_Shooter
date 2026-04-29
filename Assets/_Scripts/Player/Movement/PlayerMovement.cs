@@ -72,14 +72,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void GameInput_OnSprintCancelAction()
     {
-        _characterSpeed /= _sprintMultiplier;
-        _isSprinting = false;
+        if (_isSprinting)
+        {
+            _characterSpeed /= _sprintMultiplier;
+            _isSprinting = false;
+        }
     }
 
     private void GameInput_OnSprintStartAction()
     {
-        _characterSpeed *= _sprintMultiplier;
-        _isSprinting = true;
+        if (!_isSprinting && _dashCoroutine == null && _inputVector.magnitude > 0)
+        {
+            _characterSpeed *= _sprintMultiplier;
+            _isSprinting = true;
+        }
     }
 
     private void OnDisable()
@@ -122,6 +128,11 @@ public class PlayerMovement : MonoBehaviour
         {
             _isJumping = false;
             OnJumpAction?.Invoke();
+        }
+
+        if (!IsWalking())
+        {
+            GameInput_OnSprintCancelAction();
         }
 
         if (_dashCoroutine == null)

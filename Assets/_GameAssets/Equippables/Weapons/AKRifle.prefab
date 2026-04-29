@@ -371,6 +371,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 35556169294422643, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.58
+      objectReference: {fileID: 0}
     - target: {fileID: 552052037982675633, guid: e53cecd9410477c488fd182a25932692, type: 3}
       propertyPath: _weaponFireMode
       value: 0
@@ -417,6 +421,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4303170371226764431, guid: e53cecd9410477c488fd182a25932692, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303170371226764431, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8425102542509183052, guid: e53cecd9410477c488fd182a25932692, type: 3}

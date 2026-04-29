@@ -33,7 +33,7 @@ public class CameraFOVChanger : MonoBehaviour
 
     private void GameInput_OnSprintCancelAction()
     {
-        if (_cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
+        if (!_playerMovement.IsSprinting() && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
         {
             ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
         }
@@ -41,7 +41,7 @@ public class CameraFOVChanger : MonoBehaviour
 
     private void GameInput_OnSprintStartAction()
     {
-        if (_cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
+        if (_playerMovement.IsSprinting() && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
         {
             ApplyFOVChange(_sprintFOV, _sprintFOVChangeDuration, Ease.InOutSine);
         }
@@ -70,6 +70,16 @@ public class CameraFOVChanger : MonoBehaviour
     void Start()
     {
         _cinemachineCamera.Lens.FieldOfView = _defaultFOV;
+
+        
+    }
+
+    private void Update()
+    {
+        if (!_playerMovement.IsWalking())
+        {
+            GameInput_OnSprintCancelAction();
+        }
     }
 
 
