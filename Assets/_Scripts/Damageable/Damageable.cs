@@ -32,6 +32,7 @@ public class Damageable : MonoBehaviour
 
     private void Die() 
     {
-        Destroy(gameObject, 5f);
+        Debug.Log($"{gameObject.name} has died.");
+        Destroy(gameObject);
     }
 }
