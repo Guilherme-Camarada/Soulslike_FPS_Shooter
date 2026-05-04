@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public event Action OnJumpAction;
     public event Action<float> OnGroundedAction;
     public event Action OnStaminaChangedAction;
+    public event Action<bool> OnSprintAction;
+    public event Action<bool> OnWalkAction;
 
     [Header("References")]
     private GameInput _gameInput;
@@ -33,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _inputVector;
     private bool _isSprinting;
     private bool _isJumping;
+    public bool IsJumping => _isJumping;
     private float _timeInAir;
 
     [Header("Player Gravity Settings")]
@@ -76,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _characterSpeed /= _sprintMultiplier;
             _isSprinting = false;
+            OnSprintAction?.Invoke(false);
         }
     }
 
@@ -85,12 +89,8 @@ public class PlayerMovement : MonoBehaviour
         {
             _characterSpeed *= _sprintMultiplier;
             _isSprinting = true;
+            OnSprintAction?.Invoke(true);
         }
-    }
-
-    private void OnDisable()
-    {
-        _gameInput.OnJumpAction -= GameInput_OnJumpAction;
     }
 
     private void GameInput_OnJumpAction()
@@ -98,6 +98,15 @@ public class PlayerMovement : MonoBehaviour
         HandlePlayerJump();
     }
 
+    private void OnDisable()
+    {
+        _gameInput.OnJumpAction -= GameInput_OnJumpAction;
+        _gameInput.OnSprintStartAction -= GameInput_OnSprintStartAction;
+        _gameInput.OnSprintCancelAction -= GameInput_OnSprintCancelAction;
+        _gameInput.OnDashAction -= GameInput_OnDashAction;
+    }
+
+    
     private void Start()
     {
         _currentStamina = _maxStamina;
@@ -149,7 +158,6 @@ public class PlayerMovement : MonoBehaviour
         {
             _playerVelocity.y += Mathf.Sqrt(_jumpHeight * -3.0f * _gravityValue);
             _isJumping = true;
-            OnJumpAction?.Invoke();
         }
     }
 

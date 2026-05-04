@@ -25,7 +25,16 @@ public class PlayerUI : MonoBehaviour
     private void Start()
     {
         _healthBarImage.fillAmount = _playerDamageable.CurrentHealth / _playerDamageable.MaxHealth;
-        SetAmmoText(_playerInventory.CurrentEquippable);
+
+        if (_playerInventory.TryGetComponent(out RangedWeapon rangedWeapon))
+        {
+            rangedWeapon.OnAmmoChangedAction += RangedWeapon_OnAmmoChangedAction;
+            SetAmmoText(rangedWeapon);
+        }
+        else
+        {
+            _ammoText.text = "";
+        }
     }
 
     private void OnEnable()
@@ -35,9 +44,26 @@ public class PlayerUI : MonoBehaviour
         _playerInventory.OnCurrentEquippableChanged += PlayerInventory_OnCurrentEquippableChanged;
     }
 
-    private void PlayerInventory_OnCurrentEquippableChanged(Equippable obj)
+    private void PlayerInventory_OnCurrentEquippableChanged(Equippable previousEquippable, Equippable currentEquippable)
     {
-        SetAmmoText(obj);
+        if (previousEquippable.TryGetComponent(out RangedWeapon rangedWeapon1))
+        {
+            rangedWeapon1.OnAmmoChangedAction -= RangedWeapon_OnAmmoChangedAction;
+        }
+        if (currentEquippable.TryGetComponent(out RangedWeapon rangedWeapon2))
+        {
+            rangedWeapon2.OnAmmoChangedAction += RangedWeapon_OnAmmoChangedAction;
+            SetAmmoText(rangedWeapon2);
+        }
+        else
+        {
+            _ammoText.text = "";
+        }
+    }
+
+    private void RangedWeapon_OnAmmoChangedAction(int currentAmmo, int totalAmmo)
+    {
+        SetAmmoText(currentAmmo, totalAmmo);
     }
 
     private void PlayerMovement_OnStaminaChangedAction()
@@ -64,17 +90,13 @@ public class PlayerUI : MonoBehaviour
         _staminaTween?.Kill();
     }
 
-    private void SetAmmoText(Equippable equippable)
+    private void SetAmmoText(RangedWeapon rangedWeapon)
     {
-        if (equippable is RangedWeapon rangedWeapon)
-        {
-            _ammoText.text = $"{rangedWeapon.CurrentAmmo}/{rangedWeapon.TotalAmmo}";
-        }
-        else
-        {
-            _ammoText.text = "";
-        }
+        _ammoText.text = $"{rangedWeapon.CurrentAmmo}/{rangedWeapon.TotalAmmo}";
     }
 
-
+    private void SetAmmoText(int currentAmmo, int totalAmmo)
+    {
+        _ammoText.text = $"{currentAmmo}/{totalAmmo}";
+    }
 }

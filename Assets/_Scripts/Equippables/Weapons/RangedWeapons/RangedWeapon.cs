@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 public abstract class RangedWeapon : Equippable
 {
     public event Action OnFireAction;
-    public event Action<float> OnReloadAction;
+    public event Action <float> OnReloadAction;
+    public event Action <int, int> OnAmmoChangedAction;    
 
     [Header("Weapon Settings")]
     [SerializeField] private FireMode _weaponFireMode;
@@ -23,7 +24,7 @@ public abstract class RangedWeapon : Equippable
     [SerializeField] private float _snappiness = 10f;
     [SerializeField] private float _recoilRecoverySpeed = 2f;
 
-
+    private bool _isReloading;
 
     private int _currentAmmo;
     public int CurrentAmmo => _currentAmmo;
@@ -36,12 +37,15 @@ public abstract class RangedWeapon : Equippable
     private void Awake()
     {
         _mouseLook = MouseLook.Instance;
+
+        _currentAmmo = _totalAmmo;
+        OnAmmoChangedAction?.Invoke(_currentAmmo, _totalAmmo);
     }
 
 
     protected virtual void Start()
     {
-        _currentAmmo = _totalAmmo;
+        
     }
 
     protected virtual void Update()
@@ -53,6 +57,13 @@ public abstract class RangedWeapon : Equippable
         if (_reloadCooldownTimer >= 0f)
         {
             _reloadCooldownTimer -= Time.deltaTime;
+
+            if (_reloadCooldownTimer <= 0f && _isReloading)
+            {
+                _currentAmmo = _totalAmmo;
+                OnAmmoChangedAction?.Invoke(_currentAmmo, _totalAmmo);
+                _isReloading = false;
+            }
         }
 
         _mouseLook.ApplyRotationModifiers(_snappiness, _recoilRecoverySpeed);
@@ -73,6 +84,7 @@ public abstract class RangedWeapon : Equippable
             OnFireAction?.Invoke();
 
             _currentAmmo--;
+            OnAmmoChangedAction?.Invoke(_currentAmmo, _totalAmmo);
             _fireCooldownTimer = _fireRateCooldown;
             return true;
         }
@@ -87,18 +99,19 @@ public abstract class RangedWeapon : Equippable
 
     public void Reload()
     {
-        if (_reloadCooldownTimer > 0f || _currentAmmo == _totalAmmo)
+        if (_isReloading || _currentAmmo == _totalAmmo)
         {
             return;
         }
-        _currentAmmo = _totalAmmo;
+
+        _isReloading = true;
         _reloadCooldownTimer = _reloadCooldown;
         OnReloadAction?.Invoke(_reloadCooldownTimer);
     }
 
     public bool CanFire()
     {
-        if (_fireCooldownTimer <= 0f && _currentAmmo > 0 && _reloadCooldownTimer <= 0f && IsEquipped())
+        if (_fireCooldownTimer <= 0f && _currentAmmo > 0 && !_isReloading && _reloadCooldownTimer <= 0f && IsEquipped())
         {
             return true;
         }
@@ -140,6 +153,14 @@ public abstract class RangedWeapon : Equippable
 
             yield return null;
         }
+    }
+
+    private void OnDisable()
+    {
+        _isReloading = false;
+        _reloadCooldownTimer = 0f;
+
+        UseStop();
     }
 
 }

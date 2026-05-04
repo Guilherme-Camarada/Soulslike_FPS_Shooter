@@ -27,21 +27,28 @@ public class CameraFOVChanger : MonoBehaviour
     private void OnEnable()
     {
         _playerMovement.OnDashAction += PlayerMovement_OnDashAction;
-        _gameInput.OnSprintStartAction += GameInput_OnSprintStartAction;
-        _gameInput.OnSprintCancelAction += GameInput_OnSprintCancelAction;
+        _playerMovement.OnSprintAction += PlayerMovement_OnSprintAction;
+        _playerMovement.OnWalkAction += PlayerMovement_OnWalkAction;
     }
 
-    private void GameInput_OnSprintCancelAction()
+    private void PlayerMovement_OnWalkAction(bool isWalking)
     {
-        if (!_playerMovement.IsSprinting() && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
+        //if (!isWalking)
+        //{
+        //    if (!isSprinting && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
+        //    {
+        //        ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
+        //    }
+        //}
+    }
+
+    private void PlayerMovement_OnSprintAction(bool isSprinting)
+    {
+        if (!isSprinting && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
         {
             ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
         }
-    }
-
-    private void GameInput_OnSprintStartAction()
-    {
-        if (_playerMovement.IsSprinting() && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
+        else if (isSprinting && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
         {
             ApplyFOVChange(_sprintFOV, _sprintFOVChangeDuration, Ease.InOutSine);
         }
@@ -62,24 +69,19 @@ public class CameraFOVChanger : MonoBehaviour
     private void OnDisable()
     {
         _playerMovement.OnDashAction -= PlayerMovement_OnDashAction;
-        _gameInput.OnSprintStartAction -= GameInput_OnSprintStartAction;
-        _gameInput.OnSprintCancelAction -= GameInput_OnSprintCancelAction;  
+        _playerMovement.OnSprintAction -= PlayerMovement_OnSprintAction;
+        _playerMovement.OnWalkAction -= PlayerMovement_OnWalkAction;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _cinemachineCamera.Lens.FieldOfView = _defaultFOV;
-
-        
     }
 
     private void Update()
     {
-        if (!_playerMovement.IsWalking())
-        {
-            GameInput_OnSprintCancelAction();
-        }
+        
     }
 
 

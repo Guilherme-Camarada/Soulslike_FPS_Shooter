@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public event Action<Equippable> OnCurrentEquippableChanged;
+    public event Action<Equippable, Equippable> OnCurrentEquippableChanged;
 
     [Header("References")]
     [SerializeField] private GameInput _gameInput;
@@ -95,7 +95,7 @@ public class PlayerInventory : MonoBehaviour
     {
         if (_equippableList.Count == 0 
             || amount == -1 && _currentEquippableIndex == 0 
-            || amount == 1 && _currentEquippableIndex >= _equippableList.Count)
+            || amount == 1 && _currentEquippableIndex >= _equippableList.Count - 1)
         {
             return;
         }
@@ -106,9 +106,10 @@ public class PlayerInventory : MonoBehaviour
         if (_equippableList.Contains(_equippableList[_currentEquippableIndex]))
         {
             _currentEquippable.gameObject.SetActive(false);
+            Equippable previousEquippable = _currentEquippable;
             _currentEquippable = _equippableList[_currentEquippableIndex];
             _currentEquippable.gameObject.SetActive(true);
-            OnCurrentEquippableChanged?.Invoke(_currentEquippable);
+            OnCurrentEquippableChanged?.Invoke(previousEquippable, _currentEquippable);
         }
     }
 

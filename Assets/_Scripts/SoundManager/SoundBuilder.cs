@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SoundBuilder
@@ -7,6 +8,8 @@ public class SoundBuilder
     private Vector3 _soundPosition = Vector3.zero;
     private bool _randomPitch;
     private bool _setPitch;
+    private bool _stopWhen;
+    private Func<bool> _stopCondition;
     private float _pitch;
 
     public SoundBuilder(SoundManager soundManager)
@@ -39,6 +42,13 @@ public class SoundBuilder
         return this;
     }
 
+    public SoundBuilder StopWhen(Func<bool> condition)
+    {
+        _stopCondition = condition;
+        _stopWhen = true;
+        return this;
+    }
+
     public void Play()
     {
         if (!_soundManager.CanPlaySound(_soundData))
@@ -59,6 +69,10 @@ public class SoundBuilder
         {
             soundEmitter.WithSetPitch(_pitch);
         }
+        if (_stopWhen)
+        {
+            soundEmitter.StopWhen(_stopCondition);
+        }
 
         if (_soundManager.Counts.TryGetValue(_soundData, out var count))
         {
@@ -70,4 +84,6 @@ public class SoundBuilder
 
         soundEmitter.Play();
     }
+
+    
 }

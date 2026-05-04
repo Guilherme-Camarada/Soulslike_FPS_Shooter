@@ -26,6 +26,8 @@ public class PlayerFX : MonoBehaviour
     private bool _isDashing;
     private float _stepTimer;
 
+
+
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();

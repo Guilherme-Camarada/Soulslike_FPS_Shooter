@@ -10,6 +10,8 @@ public class SoundEmitter : MonoBehaviour
     private AudioSource _audioSource;
     private Coroutine _playingCoroutine;
 
+    private Func<bool> _stopCondition;
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -44,13 +46,27 @@ public class SoundEmitter : MonoBehaviour
             _playingCoroutine = null;
         }
 
+        _stopCondition = null;
+
         _audioSource.Stop();
         SoundManager.Instance.ReturnToPool(this);
     }
 
     private IEnumerator WaitForSoundToEnd()
     {
-        yield return new WaitWhile(() => _audioSource.isPlaying);
+        while (_audioSource.isPlaying)
+        {
+            if (_stopCondition != null && _stopCondition.Invoke())
+            {
+                Stop();
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        _playingCoroutine = null;
+        _stopCondition = null;
         SoundManager.Instance.ReturnToPool(this);
     }
 
@@ -62,5 +78,10 @@ public class SoundEmitter : MonoBehaviour
     public void WithSetPitch(float pitch)
     {
         _audioSource.pitch = pitch;     
+    }
+
+    public void StopWhen(Func<bool> stopCondition)
+    {
+        _stopCondition = stopCondition;
     }
 }

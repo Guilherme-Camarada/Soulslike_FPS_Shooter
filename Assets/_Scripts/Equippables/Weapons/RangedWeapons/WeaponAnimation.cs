@@ -26,6 +26,8 @@ public class WeaponAnimation : MonoBehaviour
     private Vector3 _reloadPositionOffset;
     private Vector3 _reloadRotationOffset;
 
+    private Sequence _reloadSequence;
+
     private void Awake()
     {
         _rangedWeapon = GetComponent<RangedWeapon>();
@@ -59,23 +61,38 @@ public class WeaponAnimation : MonoBehaviour
 
     private void RangedWeapon_OnReloadAction(float cooldownTimer)
     {
-        Sequence reloadSequence = DOTween.Sequence();
+        _reloadSequence?.Kill();
+        _reloadSequence = DOTween.Sequence();
 
         float dipTime = cooldownTimer * 0.3f;
-        reloadSequence.Append(DOTween.To(() => _reloadPositionOffset, x => _reloadPositionOffset = x, _reloadPositionDip, dipTime).SetEase(Ease.InOutSine));
-        reloadSequence.Join(DOTween.To(() => _reloadRotationOffset, x => _reloadRotationOffset = x, _reloadRotationTilt, dipTime).SetEase(Ease.InOutSine));
+        _reloadSequence.Append(DOTween.To(() => _reloadPositionOffset, x => _reloadPositionOffset = x, _reloadPositionDip, dipTime).SetEase(Ease.InOutSine));
+        _reloadSequence.Join(DOTween.To(() => _reloadRotationOffset, x => _reloadRotationOffset = x, _reloadRotationTilt, dipTime).SetEase(Ease.InOutSine));
 
-        reloadSequence.AppendInterval(cooldownTimer * 0.4f);
+        _reloadSequence.AppendInterval(cooldownTimer * 0.4f);
 
         float recoverTime = cooldownTimer * 0.3f;
-        reloadSequence.Append(DOTween.To(() => _reloadPositionOffset, x => _reloadPositionOffset = x, Vector3.zero, recoverTime).SetEase(Ease.OutBack));
-        reloadSequence.Join(DOTween.To(() => _reloadRotationOffset, x => _reloadRotationOffset = x, Vector3.zero, recoverTime).SetEase(Ease.OutBack));
+        _reloadSequence.Append(DOTween.To(() => _reloadPositionOffset, x => _reloadPositionOffset = x, Vector3.zero, recoverTime).SetEase(Ease.OutBack));
+        _reloadSequence.Join(DOTween.To(() => _reloadRotationOffset, x => _reloadRotationOffset = x, Vector3.zero, recoverTime).SetEase(Ease.OutBack));
     }
 
     private void OnDisable()
     {
         _rangedWeapon.OnFireAction -= RangedWeapon_OnFireAction;
         _rangedWeapon.OnReloadAction -= RangedWeapon_OnReloadAction;
+
+        if (_reloadSequence != null && _reloadSequence.IsActive())
+        {
+            _reloadSequence.Kill();
+        }
+
+        _reloadPositionOffset = Vector3.zero;
+        _reloadRotationOffset = Vector3.zero;
+
+        _targetPosition = _initialPosition;
+        _currentPosition = _initialPosition;
+
+        transform.localPosition = _initialPosition;
+        transform.localRotation = _initialRotation;
     }
 
     private void RangedWeapon_OnFireAction()

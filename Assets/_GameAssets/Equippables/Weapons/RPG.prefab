@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 495190006473257050}
   - component: {fileID: 484174988438251156}
   - component: {fileID: 476340489765424600}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 486707233925772234}
   - component: {fileID: 484918198781992066}
   - component: {fileID: 476614703885517908}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RPG7
   m_TagString: Untagged
   m_Icon: {fileID: 0}

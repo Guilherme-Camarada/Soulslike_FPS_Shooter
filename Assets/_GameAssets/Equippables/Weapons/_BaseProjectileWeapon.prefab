@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2985857812797923815}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MuzzleFlashPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3515818581499962672}
   - component: {fileID: 2635115092408401526}
   - component: {fileID: 6771810641880224728}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: _BaseProjectileWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 2546736610675021026}
   - component: {fileID: 2534903515222041368}
   - component: {fileID: 2524997465251511496}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 2542507528163146590}
   - component: {fileID: 2534822409113041750}
   - component: {fileID: 2524887822325357472}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 2546496290006869604}
   - component: {fileID: 2535158286725443050}
   - component: {fileID: 2525608749344460062}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: M107
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -419,7 +419,7 @@ GameObject:
   - component: {fileID: 2542809660245165970}
   - component: {fileID: 2531266175692752942}
   - component: {fileID: 2525299593653047766}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Magazin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2091189820245435754}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: VisualParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

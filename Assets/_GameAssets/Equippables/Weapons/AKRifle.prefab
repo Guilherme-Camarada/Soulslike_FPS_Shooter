@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5987759085145323186}
   - component: {fileID: 6012316336997338424}
   - component: {fileID: 6006132765504827096}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 5988085679793396102}
   - component: {fileID: 6016747713244284744}
   - component: {fileID: 6005947735870049506}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 5987734518078575274}
   - component: {fileID: 6016533393483325736}
   - component: {fileID: 6006815321650173386}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AK74
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 5987839934585474130}
   - component: {fileID: 6012484693124060922}
   - component: {fileID: 6006285986559997066}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mag
   m_TagString: Untagged
   m_Icon: {fileID: 0}

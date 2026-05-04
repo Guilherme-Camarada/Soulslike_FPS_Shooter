@@ -14,6 +14,8 @@ public class WeaponFX : MonoBehaviour
     [SerializeField] protected SoundData _fireSoundData;
     [SerializeField] protected SoundData _reloadSoundData;
 
+    private bool _disableFX;
+
     private void Awake()
     {
         _rangedWeapon = GetComponent<RangedWeapon>();
@@ -23,6 +25,8 @@ public class WeaponFX : MonoBehaviour
     {
         _rangedWeapon.OnFireAction += RangedWeapon_OnFireAction;
         _rangedWeapon.OnReloadAction += RangedWeapon_OnReloadAction;
+
+        _disableFX = false;
     }
 
     private void RangedWeapon_OnReloadAction(float cooldownTimer)
@@ -35,6 +39,7 @@ public class WeaponFX : MonoBehaviour
                 .WithSoundData(_reloadSoundData)
                 .WithSetPitch(requiredPitch)
                 .WithPosition(transform.position)
+                .StopWhen(() => _disableFX)
                 .Play();
         }
     }
@@ -59,5 +64,7 @@ public class WeaponFX : MonoBehaviour
     {
         _rangedWeapon.OnFireAction -= RangedWeapon_OnFireAction;
         _rangedWeapon.OnReloadAction -= RangedWeapon_OnReloadAction;
+
+        _disableFX = true;
     }
 }
