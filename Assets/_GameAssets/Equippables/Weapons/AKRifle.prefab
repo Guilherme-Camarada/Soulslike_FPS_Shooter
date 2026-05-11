@@ -376,6 +376,10 @@ PrefabInstance:
       value: -0.58
       objectReference: {fileID: 0}
     - target: {fileID: 552052037982675633, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: _shootOrigin
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 552052037982675633, guid: e53cecd9410477c488fd182a25932692, type: 3}
       propertyPath: _weaponFireMode
       value: 0
       objectReference: {fileID: 0}

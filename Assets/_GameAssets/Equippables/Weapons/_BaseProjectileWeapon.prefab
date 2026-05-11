@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 3515818581499962672}
   - component: {fileID: 2635115092408401526}
   - component: {fileID: 6771810641880224728}
+  - component: {fileID: 3880426347389942164}
   m_Layer: 7
   m_Name: _BaseProjectileWeapon
   m_TagString: Untagged
@@ -78,16 +79,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51d8e2a7455f935459b47f80a786754b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileRangedWeapon
-  _equippableType: 0
   _weaponFireMode: 0
   _fireRateCooldown: 0.4
   _reloadCooldown: 2
   _totalAmmo: 15
-  _mouseLook: {fileID: 0}
-  _recoilAmountY: 3
-  _recoilAmountX: 1
-  _snappiness: 10
-  _recoilRecoverySpeed: 2
+  _shootOrigin: {fileID: 2985857812797923815}
   _muzzlePoint: {fileID: 2985857812797923815}
   _projectilePrefab: {fileID: 2718891976550027334, guid: 636245ca4ceb1b34880d88f317a47cdb, type: 3}
   _projectileForce: 500
@@ -135,6 +131,22 @@ MonoBehaviour:
     _loop: 0
     _playOnAwake: 0
     _volume: 1
+--- !u!114 &3880426347389942164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106819688504554600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ec7eb4bc11b0847b2e895dbe014f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
+  _recoilAmountY: 3
+  _recoilAmountX: 1
+  _snappiness: 10
+  _recoilRecoverySpeed: 2
 --- !u!1 &2548283109754156506
 GameObject:
   m_ObjectHideFlags: 0

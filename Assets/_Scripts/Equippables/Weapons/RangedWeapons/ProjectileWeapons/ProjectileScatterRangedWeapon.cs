@@ -9,9 +9,9 @@ public class ProjectileScatterRangedWeapon : RangedWeapon
     [SerializeField] private float _scatterSpreadAngle = 15f;
     [SerializeField] private int _scatterPelletCount = 10;
 
-    public override bool Shoot()
+    public override bool TryShoot()
     {
-        if (base.Shoot())
+        if (base.TryShoot())
         {
             MultipleProjectileShot();
             return true;

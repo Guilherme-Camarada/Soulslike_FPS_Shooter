@@ -10,6 +10,7 @@ public class CameraFOVChanger : MonoBehaviour
     [SerializeField] private GameInput _gameInput;
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private CinemachineCamera _cinemachineCamera;
+    [SerializeField] private CinemachineCamera _cinemachineWeaponCamera;
 
     [Header("FOV Sprint Settings")]
     [SerializeField] private float _defaultFOV = 60f;
@@ -33,23 +34,26 @@ public class CameraFOVChanger : MonoBehaviour
 
     private void PlayerMovement_OnWalkAction(bool isWalking)
     {
-        //if (!isWalking)
-        //{
-        //    if (!isSprinting && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
-        //    {
-        //        ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
-        //    }
-        //}
+        if (!isWalking)
+        {
+            if (_cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
+            {
+                Debug.Log("Not walking, applying default FOV");
+                ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
+            }
+        }
     }
 
     private void PlayerMovement_OnSprintAction(bool isSprinting)
     {
         if (!isSprinting && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
         {
+            Debug.Log("Not sprinting, applying default FOV");
             ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
         }
         else if (isSprinting && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
         {
+            Debug.Log("Sprinting, applying sprint FOV");
             ApplyFOVChange(_sprintFOV, _sprintFOVChangeDuration, Ease.InOutSine);
         }
     }
@@ -58,9 +62,11 @@ public class CameraFOVChanger : MonoBehaviour
     {
         if (isDashing)
         {
+            Debug.Log("Dashing, applying dash FOV");
             ApplyFOVChange(_dashFOV, _dashPunchDuration, Ease.InOutSine);
         } else
         {
+            Debug.Log("Finished dashing, applying recovery FOV");
             float targetFOV = _playerMovement.IsSprinting() ? _sprintFOV : _defaultFOV;
             ApplyFOVChange(targetFOV, _dashRecoveryDuration, Ease.InOutSine);
         }
@@ -77,6 +83,7 @@ public class CameraFOVChanger : MonoBehaviour
     void Start()
     {
         _cinemachineCamera.Lens.FieldOfView = _defaultFOV;
+        _cinemachineWeaponCamera.Lens.FieldOfView = _defaultFOV;
     }
 
     private void Update()
@@ -91,7 +98,11 @@ public class CameraFOVChanger : MonoBehaviour
 
         _currentFOVTween = DOTween.To(
             () => _cinemachineCamera.Lens.FieldOfView, 
-            x => _cinemachineCamera.Lens.FieldOfView = x, value, duration)
+            x => 
+            {
+                _cinemachineCamera.Lens.FieldOfView = x;
+                _cinemachineWeaponCamera.Lens.FieldOfView = x;
+            }, value, duration)
             .SetEase(easeType);
     }
 

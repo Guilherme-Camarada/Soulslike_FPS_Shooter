@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
+using UnityEngine.SocialPlatforms;
 using Random = UnityEngine.Random;
 
-public abstract class RangedWeapon : Equippable
+public abstract class RangedWeapon : Weapon
 {
     public event Action OnFireAction;
     public event Action <float> OnReloadAction;
@@ -17,18 +19,14 @@ public abstract class RangedWeapon : Equippable
     [SerializeField] private float _reloadCooldown = 2f;
     [SerializeField] private int _totalAmmo = 15;
 
-    [Header("Recoil Settings")]
-    [SerializeField] private MouseLook _mouseLook;
-    [Range(0f, 7f)][SerializeField] private float _recoilAmountY = 3f;
-    [Range(0f, 3f)][SerializeField] private float _recoilAmountX = 1f;
-    [SerializeField] private float _snappiness = 10f;
-    [SerializeField] private float _recoilRecoverySpeed = 2f;
+    [SerializeField] protected Transform _shootOrigin;
+    public Transform ShootOrigin { get => _shootOrigin; set => _shootOrigin = value; }
 
     private bool _isReloading;
-
     private int _currentAmmo;
     public int CurrentAmmo => _currentAmmo;
     public int TotalAmmo => _totalAmmo;
+
     private float _fireCooldownTimer = 0f;
     private float _reloadCooldownTimer = 0f;
 
@@ -36,16 +34,8 @@ public abstract class RangedWeapon : Equippable
 
     private void Awake()
     {
-        _mouseLook = MouseLook.Instance;
-
         _currentAmmo = _totalAmmo;
         OnAmmoChangedAction?.Invoke(_currentAmmo, _totalAmmo);
-    }
-
-
-    protected virtual void Start()
-    {
-        
     }
 
     protected virtual void Update()
@@ -65,26 +55,17 @@ public abstract class RangedWeapon : Equippable
                 _isReloading = false;
             }
         }
-
-        _mouseLook.ApplyRotationModifiers(_snappiness, _recoilRecoverySpeed);
     }
 
-    private void CalculateRecoil()
-    {
-        float randomXRecoil = Random.Range(-_recoilAmountX, _recoilAmountX);
-
-        _mouseLook.ChangeLookTarget(randomXRecoil, _recoilAmountY);
-    }
-
-    public virtual bool Shoot()
+    public virtual bool TryShoot()
     {
         if (CanFire())
         {
-            CalculateRecoil();
             OnFireAction?.Invoke();
 
             _currentAmmo--;
             OnAmmoChangedAction?.Invoke(_currentAmmo, _totalAmmo);
+
             _fireCooldownTimer = _fireRateCooldown;
             return true;
         }
@@ -111,7 +92,7 @@ public abstract class RangedWeapon : Equippable
 
     public bool CanFire()
     {
-        if (_fireCooldownTimer <= 0f && _currentAmmo > 0 && !_isReloading && _reloadCooldownTimer <= 0f && IsEquipped())
+        if (_fireCooldownTimer <= 0f && _currentAmmo > 0 && !_isReloading && _reloadCooldownTimer <= 0f)
         {
             return true;
         }
@@ -121,17 +102,30 @@ public abstract class RangedWeapon : Equippable
 
     public override void UseStart()
     {
-        if (WeaponFireMode == FireMode.Semi_Automatic)
-        {
-            Shoot();
-        }
-        else if (WeaponFireMode == FireMode.Automatic)
-        {
-            _shootingCoroutine = StartCoroutine(AutoShootRoutine());
-        }
+        Attack();
     }
 
     public override void UseStop()
+    {
+        StopAttack();
+    }
+
+    public override void Attack()
+    {
+        if (WeaponFireMode == FireMode.Semi_Automatic)
+        {
+            TryShoot();
+        }
+        else if (WeaponFireMode == FireMode.Automatic)
+        {
+            if (_shootingCoroutine == null)
+            {
+                _shootingCoroutine = StartCoroutine(AutoShootRoutine());
+            }
+        }
+    }
+
+    public override void StopAttack()
     {
         if (_shootingCoroutine != null)
         {
@@ -144,12 +138,7 @@ public abstract class RangedWeapon : Equippable
     {
         while (true)
         {
-            if (!IsEquipped())
-            {
-                StopCoroutine(_shootingCoroutine);
-                _shootingCoroutine = null;
-            }
-            Shoot();
+            TryShoot();
 
             yield return null;
         }
@@ -160,7 +149,7 @@ public abstract class RangedWeapon : Equippable
         _isReloading = false;
         _reloadCooldownTimer = 0f;
 
-        UseStop();
+        StopAttack();
     }
 
 }
@@ -169,10 +158,4 @@ public enum FireMode
 {
     Automatic,
     Semi_Automatic
-}
-
-public enum BulletType
-{
-    Single,
-    Scatter
 }

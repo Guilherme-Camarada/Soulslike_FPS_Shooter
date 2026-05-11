@@ -439,6 +439,7 @@ GameObject:
   - component: {fileID: 552052037982675633}
   - component: {fileID: 972910348635930082}
   - component: {fileID: 8425102542509183052}
+  - component: {fileID: 5418039126274068261}
   m_Layer: 7
   m_Name: _BaseRaycastWeapon
   m_TagString: Untagged
@@ -474,18 +475,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce8d8c8d572675449b3c26b14d55aafc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaycastRangedWeapon
-  _equippableType: 1
   _weaponFireMode: 1
   _fireRateCooldown: 0.15
   _reloadCooldown: 2
   _totalAmmo: 28
-  _mouseLook: {fileID: 0}
-  _recoilAmountY: 3
-  _recoilAmountX: 2
-  _snappiness: 10
-  _recoilRecoverySpeed: 2
+  _shootOrigin: {fileID: 0}
   _trailRenderer: {fileID: 4631700167549077124, guid: 20e4066834b886545b8bd2cbd586f73d, type: 3}
   _muzzlePoint: {fileID: 35556169294422643}
+  _trailSpeed: 100
   _range: 50
   _damage: 12
   _hitParticleSystem: {fileID: 8932642147871933981, guid: 2ded55d2f69f79f4288ab98538292168, type: 3}
@@ -533,3 +530,19 @@ MonoBehaviour:
     _loop: 0
     _playOnAwake: 0
     _volume: 1
+--- !u!114 &5418039126274068261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3759760913656707068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ec7eb4bc11b0847b2e895dbe014f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
+  _recoilAmountY: 3
+  _recoilAmountX: 1
+  _snappiness: 10
+  _recoilRecoverySpeed: 2

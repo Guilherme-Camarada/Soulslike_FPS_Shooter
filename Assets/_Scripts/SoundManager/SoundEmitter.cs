@@ -72,6 +72,7 @@ public class SoundEmitter : MonoBehaviour
 
     public void WithRandomPitch(float min = -0.05f, float max = 0.05f)
     {
+        _audioSource.pitch = 1f;
         _audioSource.pitch += Random.Range(min, max);
     }
 

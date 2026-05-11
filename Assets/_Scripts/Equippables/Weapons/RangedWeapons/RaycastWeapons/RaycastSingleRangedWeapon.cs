@@ -15,9 +15,9 @@ public class RaycastSingleRangedWeapon : RaycastRangedWeapon
     [Header("Hit Effects")]
     [SerializeField] protected ParticleSystem _hitParticleSystem;
 
-    public override bool Shoot()
+    public override bool TryShoot()
     {
-        if (base.Shoot())
+        if (base.TryShoot())
         {
             SingleRaycastShot(_damage, _range);
             return true;
@@ -27,15 +27,19 @@ public class RaycastSingleRangedWeapon : RaycastRangedWeapon
 
     private void SingleRaycastShot(float damage, float range)
     {
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hitInfo, range))
+        TrailRenderer trail = Instantiate(_trailRenderer, _muzzlePoint.position, Quaternion.identity);
+
+        if (Physics.Raycast(_shootOrigin.position, _shootOrigin.forward, out RaycastHit hitInfo, range))
         {
             if (hitInfo.collider.TryGetComponent<Damageable>(out Damageable damageable))
             {
                 damageable.TakeDamage(damage);
             }
-
-            TrailRenderer trail = Instantiate(_trailRenderer, _muzzlePoint.position, Quaternion.identity);
-            StartCoroutine(SpawnTrail(trail, hitInfo, _hitParticleSystem));
+            
+            StartCoroutine(SpawnTrail(trail, hitInfo.point, hitInfo.normal, true, _hitParticleSystem));
+        } else
+        {
+            StartCoroutine(SpawnTrail(trail, _shootOrigin.position + _shootOrigin.forward * range, Vector3.zero, false, null));
         }
     }
 

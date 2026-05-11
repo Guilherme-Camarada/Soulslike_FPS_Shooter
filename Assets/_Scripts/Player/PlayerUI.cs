@@ -8,7 +8,7 @@ public class PlayerUI : MonoBehaviour
     [Header("References")]
     [SerializeField] private Damageable _playerDamageable;
     [SerializeField] private PlayerMovement _playerMovement;
-    [SerializeField] private PlayerInventory _playerInventory;
+    [SerializeField] private UnitInventory _playerInventory;
 
     [Header("UI Elements")]
     [SerializeField] private Image _healthBarImage;
@@ -44,7 +44,7 @@ public class PlayerUI : MonoBehaviour
         _playerInventory.OnCurrentEquippableChanged += PlayerInventory_OnCurrentEquippableChanged;
     }
 
-    private void PlayerInventory_OnCurrentEquippableChanged(Equippable previousEquippable, Equippable currentEquippable)
+    private void PlayerInventory_OnCurrentEquippableChanged(Usable previousEquippable, Usable currentEquippable)
     {
         if (previousEquippable.TryGetComponent(out RangedWeapon rangedWeapon1))
         {

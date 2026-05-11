@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Collider))]
-public class MeleeWeapon : Equippable
+public class MeleeWeapon : Usable
 {
     public event Action OnWeaponAttack;
     public event Action<ContactPoint> OnWeaponCollision;

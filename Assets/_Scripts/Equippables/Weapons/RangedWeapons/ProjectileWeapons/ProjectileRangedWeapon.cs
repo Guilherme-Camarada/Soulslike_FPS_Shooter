@@ -7,9 +7,9 @@ public class ProjectileRangedWeapon : RangedWeapon
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private float _projectileForce = 500f;
 
-    public override bool Shoot()
+    public override bool TryShoot()
     {
-        if (base.Shoot())
+        if (base.TryShoot())
         {
             SingleProjectileShot();
             return true;

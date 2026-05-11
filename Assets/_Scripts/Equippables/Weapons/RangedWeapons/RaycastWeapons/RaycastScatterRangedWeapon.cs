@@ -11,9 +11,9 @@ public class RaycastScatterRangedWeapon : RaycastRangedWeapon
     [Header("Hit Effects")]
     [SerializeField] protected ParticleSystem _hitParticleSystem;
 
-    public override bool Shoot()
+    public override bool TryShoot()
     {
-        if (base.Shoot())
+        if (base.TryShoot())
         {
             MultipleRaycastShot(_damagePerBullet, _range);
             return true;
@@ -25,16 +25,20 @@ public class RaycastScatterRangedWeapon : RaycastRangedWeapon
     {
         for (int i = 0; i < _scatterPelletCount; i++)
         {
-            Vector3 spreadDirection = Quaternion.Euler(Random.Range(-_scatterSpreadAngle, _scatterSpreadAngle), Random.Range(-_scatterSpreadAngle, _scatterSpreadAngle), 0) * Camera.main.transform.forward;
-            if (Physics.Raycast(Camera.main.transform.position, spreadDirection, out RaycastHit hitInfo, range))
+            TrailRenderer trail = Instantiate(_trailRenderer, _muzzlePoint.position, Quaternion.identity);
+            Vector3 spreadDirection = Quaternion.Euler(Random.Range(-_scatterSpreadAngle, _scatterSpreadAngle), Random.Range(-_scatterSpreadAngle, _scatterSpreadAngle), 0) * _shootOrigin.forward;
+
+            if (Physics.Raycast(_shootOrigin.position, spreadDirection, out RaycastHit hitInfo, range))
             {
                 if (hitInfo.collider.TryGetComponent<Damageable>(out Damageable damageable))
                 {
                     damageable.TakeDamage(damage);
                 }
 
-                TrailRenderer trail = Instantiate(_trailRenderer, _muzzlePoint.position, Quaternion.identity);
-                StartCoroutine(SpawnTrail(trail, hitInfo, _hitParticleSystem));
+                StartCoroutine(SpawnTrail(trail, hitInfo.point, hitInfo.normal, true, _hitParticleSystem));
+            } else
+            {
+                StartCoroutine(SpawnTrail(trail, _shootOrigin.position + spreadDirection * range, Vector3.zero, false, null));
             }
         }
     }

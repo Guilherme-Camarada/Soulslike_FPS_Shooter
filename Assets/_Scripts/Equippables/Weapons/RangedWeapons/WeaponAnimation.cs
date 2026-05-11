@@ -5,7 +5,7 @@ public class WeaponAnimation : MonoBehaviour
 {
     [Header("References")]
     private RangedWeapon _rangedWeapon;
-    private Equippable _equippable;
+    private Usable _equippable;
 
     [Header("Recoil Animation Settings")]
     [SerializeField] private Vector3 _kickbackAmount = new Vector3(0f, 0f, -0.2f);
@@ -31,7 +31,7 @@ public class WeaponAnimation : MonoBehaviour
     private void Awake()
     {
         _rangedWeapon = GetComponent<RangedWeapon>();
-        _equippable = GetComponent<Equippable>();
+        _equippable = GetComponent<Usable>();
     }
 
     private void Start()
@@ -42,10 +42,6 @@ public class WeaponAnimation : MonoBehaviour
 
     private void Update()
     {
-        if (!_equippable.IsEquipped())
-        {
-            return;
-        }
         _targetPosition = Vector3.Lerp(_targetPosition, _initialPosition, _recoilRecoverySpeed * Time.deltaTime);
         _currentPosition = Vector3.Lerp(_currentPosition, _targetPosition, _snappiness * Time.deltaTime);
 

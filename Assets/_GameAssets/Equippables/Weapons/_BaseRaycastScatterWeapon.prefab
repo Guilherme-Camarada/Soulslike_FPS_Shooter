@@ -408,6 +408,7 @@ GameObject:
   - component: {fileID: 1851611798394919388}
   - component: {fileID: 6847892224638948861}
   - component: {fileID: 2766084709090687059}
+  - component: {fileID: -277805727811437810}
   m_Layer: 7
   m_Name: _BaseRaycastScatterWeapon
   m_TagString: Untagged
@@ -443,18 +444,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c5677b000daff44fbf50fca25f0e21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaycastScatterRangedWeapon
-  _equippableType: 1
   _weaponFireMode: 0
   _fireRateCooldown: 0.4
   _reloadCooldown: 2
   _totalAmmo: 15
-  _mouseLook: {fileID: 0}
-  _recoilAmountY: 3
-  _recoilAmountX: 1
-  _snappiness: 10
-  _recoilRecoverySpeed: 2
+  _shootOrigin: {fileID: 0}
   _trailRenderer: {fileID: 4631700167549077124, guid: 20e4066834b886545b8bd2cbd586f73d, type: 3}
   _muzzlePoint: {fileID: 5978162750971660908}
+  _trailSpeed: 100
   _range: 50
   _damagePerBullet: 10
   _scatterSpreadAngle: 4
@@ -504,6 +501,22 @@ MonoBehaviour:
     _loop: 0
     _playOnAwake: 0
     _volume: 1
+--- !u!114 &-277805727811437810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7396524522626260963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ec7eb4bc11b0847b2e895dbe014f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
+  _recoilAmountY: 3
+  _recoilAmountX: 1
+  _snappiness: 10
+  _recoilRecoverySpeed: 2
 --- !u!1 &8406326203437428760
 GameObject:
   m_ObjectHideFlags: 0

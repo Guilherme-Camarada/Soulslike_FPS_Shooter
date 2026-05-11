@@ -1,25 +1,28 @@
 using System.Collections;
 using UnityEngine;
 
-public class RaycastRangedWeapon : RangedWeapon
+public abstract class RaycastRangedWeapon : RangedWeapon
 {
     [SerializeField] protected TrailRenderer _trailRenderer;
     [SerializeField] protected Transform _muzzlePoint;
 
-    protected IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit targetPoint, ParticleSystem particleSystem)
-    {
-        Vector3 startPosition = trail.transform.position;
-        float time = 0f;
+    [SerializeField] protected float _trailSpeed = 100f;
 
-        while (time < 1f)
+    protected IEnumerator SpawnTrail(TrailRenderer trail, Vector3 destination, Vector3 hitNormal, bool hitSomething, ParticleSystem particleSystem)
+    {
+        while (Vector3.Distance(trail.transform.position, destination) > 0.05f)
         {
-            trail.transform.position = Vector3.Lerp(startPosition, targetPoint.point, time);
-            time += Time.deltaTime / trail.time;
+            trail.transform.position = Vector3.MoveTowards(trail.transform.position, destination, _trailSpeed * Time.deltaTime);
+
             yield return null;
         }
 
-        trail.transform.position = targetPoint.point;
-        Instantiate(particleSystem, targetPoint.point, Quaternion.LookRotation(targetPoint.normal));
+        trail.transform.position = destination;
+
+        if (hitSomething && particleSystem != null)
+        {
+            Instantiate(particleSystem, destination, Quaternion.LookRotation(hitNormal));
+        }
 
         Destroy(trail.gameObject, trail.time);
     }

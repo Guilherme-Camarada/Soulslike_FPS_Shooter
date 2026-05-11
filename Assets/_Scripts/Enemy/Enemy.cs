@@ -1,12 +1,20 @@
+using System.Collections.Generic;
+using System.Security.Authentication.ExtendedProtection;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Damageable))]
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     private Damageable _damageable;
     private NavMeshAgent _agent;
+    private List<Usable> _weapon;
+    private EnemyProceduralAnimation _enemyProceduralAnimation;
+
+    [Header("Target Settings")]
+    [SerializeField] private Transform _chaseTarget;
+    [SerializeField] private LayerMask _playerLayer;
 
     [Header("Enemy Settings")]
     [SerializeField] private float _detectionRadius = 5f;
@@ -20,68 +28,110 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private float _chaseSpeed = 4f;
     [SerializeField] private float _interestDistance = 10f;
 
-    private bool _isPatrolling = true;
-    private bool _isChasing;
-
-    private Transform _chaseTarget;
+    private bool _targetInSightRange;
+    private bool _targetInAttackRange;
 
     protected virtual void Awake()
     {
         _damageable = GetComponent<Damageable>();
         _agent = GetComponent<NavMeshAgent>();
+        _weapon = new List<Usable>(GetComponents<Usable>());
+        _enemyProceduralAnimation = GetComponent<EnemyProceduralAnimation>();
     }
 
     protected virtual void Update()
     {
-        if (_isPatrolling)
+        _targetInSightRange = Physics.CheckSphere(transform.position, _detectionRadius, _playerLayer);
+        _targetInAttackRange = Physics.CheckSphere(transform.position, _attackRange, _playerLayer);
+
+        if (!_targetInSightRange && !_targetInAttackRange)
         {
-            _isChasing = false;
-
-            _agent.stoppingDistance = 0f;
-
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, _detectionRadius);
-
-            foreach (Collider hitCollider in hitColliders)
+            if (_weapon.Count > 0)
             {
-                if (hitCollider.TryGetComponent(out PlayerInteractor player))
-                {
-                    _isChasing = true;
-                    _isPatrolling = false;  
-                    _chaseTarget = player.transform;
-                    break;
-                }
+                StopAttack();
             }
 
-            if (_patrolPoints.Length > 0)
+            Patrol();
+        }
+        if (_targetInSightRange && !_targetInAttackRange)
+        {
+            if (_weapon.Count > 0)
             {
-                if (!_agent.hasPath)
-                {
-                    Transform nextPatrolPoint = _patrolPoints[Random.Range(0, _patrolPoints.Length)];
-                    _agent.SetDestination(nextPatrolPoint.position);
-                    _agent.speed = _patrolSpeed;
-                }
+                StopAttack();
+            }
+
+            Chase();
+        }
+        if (_targetInSightRange && _targetInAttackRange && _weapon.Count > 0) Attack();
+
+    }
+
+    protected virtual void Patrol()
+    {
+        _agent.enabled = true;
+
+        _agent.stoppingDistance = 0f;
+
+        if (_patrolPoints.Length > 0)
+        {
+            if (!_agent.hasPath)
+            {
+                Transform nextPatrolPoint = _patrolPoints[Random.Range(0, _patrolPoints.Length)];
+                _agent.SetDestination(nextPatrolPoint.position);
+                _agent.speed = _patrolSpeed;
             }
         }
-        else if (_isChasing)
+    }
+
+    protected virtual void Chase()
+    {
+        _agent.enabled = true;
+
+
+        _agent.stoppingDistance = _attackRange;
+        _agent.SetDestination(_chaseTarget.position);
+        _agent.speed = _chaseSpeed;
+    }
+
+    protected virtual void Attack()
+    {
+        if (_weapon.Count == 0) return;
+        _agent.enabled = false;
+
+        _enemyProceduralAnimation.SetNeutralStance();
+
+        Collider targetCollider = _chaseTarget.GetComponent<Collider>();
+        Vector3 targetCenter = targetCollider != null ? targetCollider.bounds.center : _chaseTarget.position;
+
+        Vector3 direction = (targetCenter - transform.position).normalized;
+
+        if (direction == Vector3.zero)
         {
-            _isPatrolling = false;
-
-            _agent.stoppingDistance = _attackRange;
-
-            if (_chaseTarget == null || Vector3.Distance(transform.position, _chaseTarget.position) > _interestDistance)
+            foreach (var weapon in _weapon)
             {
-                {
-                    _isChasing = false;
-                    _isPatrolling = true;
-                    return;
-                }
-            } else
-            {
-                _agent.SetDestination(_chaseTarget.position);
-                _agent.speed = _chaseSpeed;
+                weapon.UseStart();
             }
+        }
+        else
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 15f);
+            foreach (var weapon in _weapon)
+            {
+                weapon.UseStart();
+            }
+        }
+    }
 
+    protected virtual void StopAttack()
+    {
+        if (_weapon.Count == 0) return;
+
+        foreach (var weapon in _weapon)
+        {
+            weapon.UseStop();
         }
 
     }
+
 }
