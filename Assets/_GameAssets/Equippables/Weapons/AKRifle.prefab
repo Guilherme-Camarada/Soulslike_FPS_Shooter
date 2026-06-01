@@ -371,13 +371,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8141138441307457342, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: m_Size.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8141138441307457342, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: m_Size.z
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 35556169294422643, guid: e53cecd9410477c488fd182a25932692, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.58
-      objectReference: {fileID: 0}
-    - target: {fileID: 552052037982675633, guid: e53cecd9410477c488fd182a25932692, type: 3}
-      propertyPath: _shootOrigin
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 552052037982675633, guid: e53cecd9410477c488fd182a25932692, type: 3}
       propertyPath: _weaponFireMode
@@ -431,6 +435,26 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7394468353015429254, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: _highlightedVisualList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394468353015429254, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: '_highlightedVisualList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5984707100220913012}
+    - target: {fileID: 7394468353015429254, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: '_highlightedVisualList.Array.data[1]'
+      value: 
+      objectReference: {fileID: 5984600577225233258}
+    - target: {fileID: 7394468353015429254, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: '_highlightedVisualList.Array.data[2]'
+      value: 
+      objectReference: {fileID: 5984829359434208036}
+    - target: {fileID: 7394468353015429254, guid: e53cecd9410477c488fd182a25932692, type: 3}
+      propertyPath: '_highlightedVisualList.Array.data[3]'
+      value: 
+      objectReference: {fileID: 5984174223079131376}
     - target: {fileID: 8425102542509183052, guid: e53cecd9410477c488fd182a25932692, type: 3}
       propertyPath: _fireSoundData._audioClip
       value: 

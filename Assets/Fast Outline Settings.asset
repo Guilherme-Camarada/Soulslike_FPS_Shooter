@@ -48,7 +48,7 @@ MonoBehaviour:
   gpuInstancing: 0
   extrusionMethod: 4
   scaling: 0
-  width: 1
+  width: 2
   minWidth: 0
   scaleWithResolution: 0
   referenceResolution: 0

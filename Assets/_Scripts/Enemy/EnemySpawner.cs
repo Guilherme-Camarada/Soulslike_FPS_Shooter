@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private PlayerInteractor playerInteractor;
+    [SerializeField] private Interactor playerInteractor;
 
     [SerializeField] private List<Transform> _spawnPositionList;
     [SerializeField] private List<WaveInformation> _waveInformationList;

@@ -3,7 +3,7 @@ using UnityEngine;
 public class WeaponRecoil : MonoBehaviour
 {
     private MouseLook _mouseLook;
-    private RangedWeapon _weapon;
+    private ShootUsable _weapon;
 
     [Header("Recoil Settings")]
     [Range(0f, 7f)][SerializeField] private float _recoilAmountY = 3f;
@@ -13,7 +13,11 @@ public class WeaponRecoil : MonoBehaviour
 
     private void Awake()
     {
-        _weapon = GetComponent<RangedWeapon>();
+        _weapon = GetComponent<ShootUsable>();
+    }
+
+    private void Start()
+    {
         _mouseLook = MouseLook.Instance;
     }
 

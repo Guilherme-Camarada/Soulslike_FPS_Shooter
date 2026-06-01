@@ -45,7 +45,7 @@ public class EnemyAI : MonoBehaviour
         _damageable = GetComponent<Damageable>();
     }
 
-    public void OnInit(PlayerInteractor playerInteractor)
+    public void OnInit(Interactor playerInteractor)
     {
         _target = playerInteractor.transform;
     }

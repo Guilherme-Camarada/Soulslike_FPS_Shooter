@@ -372,6 +372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4097603650526530494}
+  - component: {fileID: 910981896401651692}
   m_Layer: 7
   m_Name: VisualParent
   m_TagString: Untagged
@@ -396,6 +397,27 @@ Transform:
   - {fileID: 916235257869176627}
   m_Father: {fileID: 3998813419549501903}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &910981896401651692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065251934001894325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf2cab47e5d728449d3e8a971db2d52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoveredInteractableVisual
+  _interactable: {fileID: 7088161200688485514}
+  _highlightedVisualList:
+  - {fileID: 470315237917117696}
+  - {fileID: 469970010624236302}
+  - {fileID: 470195276333127192}
+  - {fileID: 469947836397312946}
+  _highlightLayerMask:
+    serializedVersion: 0
+    m_Bits: 2
 --- !u!1 &3091977748272018759
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,10 +458,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3998813419549501903}
+  - component: {fileID: -1519687976756664235}
+  - component: {fileID: -2596536816137492643}
   - component: {fileID: 1970521035041035894}
   - component: {fileID: 92664605181726882}
   - component: {fileID: 8656682810970815756}
   - component: {fileID: 7714001382190472644}
+  - component: {fileID: 7088161200688485514}
   m_Layer: 7
   m_Name: _BaseProjectileScatterWeapon
   m_TagString: Untagged
@@ -463,6 +488,54 @@ Transform:
   - {fileID: 4097603650526530494}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &-1519687976756664235
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4099427504987757244}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0, y: 0.2, z: 1.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &-2596536816137492643
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4099427504987757244}
+  serializedVersion: 5
+  m_Mass: 10
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 112
+  m_CollisionDetection: 2
 --- !u!114 &1970521035041035894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -543,5 +616,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
   _recoilAmountY: 3
   _recoilAmountX: 1
-  _snappiness: 10
+  _snappiness: 5
   _recoilRecoverySpeed: 2
+--- !u!114 &7088161200688485514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4099427504987757244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276cedec13ed3ab46a598ac8a0ffe42e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Equippable

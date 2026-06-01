@@ -44,6 +44,9 @@ GameObject:
   - component: {fileID: 2635115092408401526}
   - component: {fileID: 6771810641880224728}
   - component: {fileID: 3880426347389942164}
+  - component: {fileID: -3788004017101745337}
+  - component: {fileID: -7760896935765469793}
+  - component: {fileID: 8614040361067781648}
   m_Layer: 7
   m_Name: _BaseProjectileWeapon
   m_TagString: Untagged
@@ -145,8 +148,68 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponRecoil
   _recoilAmountY: 3
   _recoilAmountX: 1
-  _snappiness: 10
+  _snappiness: 5
   _recoilRecoverySpeed: 2
+--- !u!65 &-3788004017101745337
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106819688504554600}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0, y: 0.2, z: 1.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &-7760896935765469793
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106819688504554600}
+  serializedVersion: 5
+  m_Mass: 10
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 2
+--- !u!114 &8614040361067781648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106819688504554600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276cedec13ed3ab46a598ac8a0ffe42e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Equippable
 --- !u!1 &2548283109754156506
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,6 +582,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2091189820245435754}
+  - component: {fileID: 100843076984501848}
   m_Layer: 7
   m_Name: VisualParent
   m_TagString: Untagged
@@ -543,3 +607,20 @@ Transform:
   - {fileID: 2985857812797923815}
   m_Father: {fileID: 1343859802988480283}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &100843076984501848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3103105752934727009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf2cab47e5d728449d3e8a971db2d52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoveredInteractableVisual
+  _interactable: {fileID: 8614040361067781648}
+  _highlightedVisualList: []
+  _highlightLayerMask:
+    serializedVersion: 0
+    m_Bits: 2
