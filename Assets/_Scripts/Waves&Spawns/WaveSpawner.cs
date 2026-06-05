@@ -12,51 +12,72 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField]
     private bool isRunning;
 
-    private Coroutine routine;
+    [ReadOnly]
+    [SerializeField]
+    private int currentWaveIndex = -1;
 
+    private Coroutine waveRoutine;
+
+    // ─────────────────────────────────────────────
+    // START RUN
+    // ─────────────────────────────────────────────
     [Button("Start Waves")]
     public void StartWaves()
     {
         if (isRunning) return;
 
-        routine = StartCoroutine(RunWaves());
+        currentWaveIndex = -1;
+        isRunning = true;
+
+        StartNextWave();
     }
 
+    // ─────────────────────────────────────────────
+    // NEXT WAVE
+    // ─────────────────────────────────────────────
+    [Button("Start Next Wave")]
+    public void StartNextWave()
+    {
+        if (!isRunning)
+            return;
+
+        currentWaveIndex++;
+
+        if (currentWaveIndex >= waves.Count)
+        {
+            Debug.Log("You won");
+            isRunning = false;
+            return;
+        }
+
+        if (waveRoutine != null)
+            StopCoroutine(waveRoutine);
+
+        waveRoutine = StartCoroutine(RunWaveSequence(waves[currentWaveIndex]));
+    }
+
+    // ─────────────────────────────────────────────
+    // STOP
+    // ─────────────────────────────────────────────
     [Button("Stop Waves")]
     public void StopWaves()
     {
-        if (routine != null)
-            StopCoroutine(routine);
+        if (waveRoutine != null)
+            StopCoroutine(waveRoutine);
 
         isRunning = false;
+        currentWaveIndex = -1;
     }
 
-    private IEnumerator RunWaves()
+    // ─────────────────────────────────────────────
+    // WAVE RUNNER
+    // ─────────────────────────────────────────────
+    private IEnumerator RunWaveSequence(WaveData wave)
     {
-        isRunning = true;
+        int waveNumber = currentWaveIndex + 1;
 
-        for (int i = 0; i < waves.Count; i++)
-        {
-            int waveNumber = i + 1;
-            WaveData wave = waves[i];
+        Debug.Log($"Wave {waveNumber} started");
 
-            Debug.Log($"Wave {waveNumber} started");
-
-            yield return StartCoroutine(RunWave(wave));
-
-            Debug.Log($"Wave {waveNumber} ended");
-
-            if (wave.GracePeriod > 0)
-                yield return new WaitForSeconds(wave.GracePeriod);
-        }
-
-        Debug.Log("You won");
-
-        isRunning = false;
-    }
-
-    private IEnumerator RunWave(WaveData wave)
-    {
         float elapsed = 0f;
 
         while (elapsed < wave.WaveDuration)
@@ -66,8 +87,29 @@ public class WaveSpawner : MonoBehaviour
             yield return new WaitForSeconds(wave.SpawnCooldown);
             elapsed += wave.SpawnCooldown;
         }
+
+        Debug.Log($"Wave {waveNumber} ended");
+
+        OnWaveFinished();
     }
 
+    private void OnWaveFinished()
+    {
+        // If this was the last wave → win immediately
+        if (currentWaveIndex >= waves.Count - 1)
+        {
+            Debug.Log("You won");
+            isRunning = false;
+            return;
+        }
+
+        // Otherwise wait for player input
+        Debug.Log("Wave complete. Ready for next wave.");
+    }
+
+    // ─────────────────────────────────────────────
+    // SPAWN LOGIC
+    // ─────────────────────────────────────────────
     private void SpawnEnemy(WaveData wave)
     {
         if (wave.Enemies.Count == 0 || wave.SpawnPoints.Count == 0)

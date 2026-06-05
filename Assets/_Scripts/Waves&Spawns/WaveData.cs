@@ -12,9 +12,6 @@ public class WaveData
     [Min(0.1f)]
     public float SpawnCooldown = 1f;
 
-    [Min(0f)]
-    public float GracePeriod = 5f;
-
     [BoxGroup("Enemies")]
     public List<EnemySpawnEntry> Enemies = new();
 
