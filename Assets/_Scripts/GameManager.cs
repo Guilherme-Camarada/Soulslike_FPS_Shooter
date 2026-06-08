@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -11,12 +12,18 @@ public class GameManager : MonoBehaviour
 
     public event Action OnGameStartedAction;
 
-    [SerializeField] private List<Transform> _weaponSpawnPositions;
+    [SerializeField] private WaveSpawner _waveSpawner;
+
+    [SerializeField] private List<Transform> _pedestalSpawnPositions;
     [SerializeField] private List<ShootUsable> _shootUsableList;
+    [SerializeField] private List<Upgrade> _upgradeList;
 
     private List<EquipInteractable> _spawnedInteractables = new List<EquipInteractable>();
+    private List<AddUpgradeInteractable> _spawnedUpgrades = new();
 
     private bool _hasGameStarted;
+
+    private GameState _gameState; 
 
     private void Awake()
     {
@@ -32,7 +39,85 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SpawnRandomWeapons(_weaponSpawnPositions.Count, _shootUsableList);
+        SpawnRandomWeapons(_pedestalSpawnPositions.Count, _shootUsableList);
+    }
+
+    private void OnEnable()
+    {
+        _waveSpawner.OnWaveEndAction += WaveSpawner_OnWaveEndAction;
+
+    }
+
+    private void WaveSpawner_OnWaveEndAction()
+    {
+        HandleStateChange(GameState.ChoosingUpgrade);
+    }
+
+    private void OnDisable()
+    {
+        _waveSpawner.OnWaveEndAction -= WaveSpawner_OnWaveEndAction;
+    }
+
+    private void HandleStateChange(GameState newState)
+    {
+        if (newState == GameState.ChoosingUpgrade)
+        {
+            SpawnRandomUpgrades(_pedestalSpawnPositions.Count, _upgradeList);
+        }
+        else if (newState == GameState.WaveSpawning)
+        {
+            _waveSpawner.StartNextWave();
+        }
+
+        _gameState = newState;
+    }
+
+    private void SpawnRandomUpgrades(int amount, List<Upgrade> upgradeList)
+    {
+        List<Upgrade> availableUpgrades = new List<Upgrade>(upgradeList);
+
+        for (int i = 0; i < amount; i++)
+        {
+            if (availableUpgrades.Count == 0)
+            {
+                Debug.LogWarning("Not enough unique upgrades to spawn.");
+                break;
+            }
+
+            int randomIndex = Random.Range(0, availableUpgrades.Count);
+            Upgrade selectedUpgrade = availableUpgrades[randomIndex];
+            availableUpgrades.RemoveAt(randomIndex);
+
+            Transform spawnPosition = _pedestalSpawnPositions[i];
+            Upgrade instantiatedUpgrade = Instantiate(selectedUpgrade, spawnPosition.position, spawnPosition.rotation);
+
+            AddUpgradeInteractable interactable = instantiatedUpgrade.GetComponent<AddUpgradeInteractable>();
+            interactable.OnUpgradeAddedAction += Interactable_OnUpgradeAddedAction;
+
+            _spawnedUpgrades.Add(interactable);
+        }
+    }
+
+    private void Interactable_OnUpgradeAddedAction()
+    {
+        HandleStateChange(GameState.WaveSpawning);
+
+        foreach (AddUpgradeInteractable interactable in _spawnedUpgrades)
+        {
+            interactable.IsInteractable = false;
+
+            if (interactable != null)
+            {
+                interactable.OnUpgradeAddedAction -= Interactable_OnUpgradeAddedAction;
+            }
+
+            Sequence destroySequence = DOTween.Sequence();
+
+            destroySequence.Append(interactable.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBounce))
+                           .OnComplete(() => Destroy(interactable.gameObject));
+        }
+
+        _spawnedUpgrades.Clear();
     }
 
     private void SpawnRandomWeapons(int amount, List<ShootUsable> shootUsableList)
@@ -51,7 +136,7 @@ public class GameManager : MonoBehaviour
             ShootUsable selectedWeapon = availableWeapons[randomIndex];
             availableWeapons.RemoveAt(randomIndex);
 
-            Transform spawnPosition = _weaponSpawnPositions[i];
+            Transform spawnPosition = _pedestalSpawnPositions[i];
             ShootUsable instantiatedWeapon = Instantiate(selectedWeapon, spawnPosition.position, spawnPosition.rotation);
 
             EquipInteractable equipInteractable = instantiatedWeapon.GetComponent<EquipInteractable>();
@@ -61,13 +146,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
     private void EquipInteractable_OnEquipAction(bool value)
     {
         if (value && !_hasGameStarted)
         {
+            HandleStateChange(GameState.WaveSpawning);
             _hasGameStarted = true;
             OnGameStartedAction?.Invoke();
-            Debug.Log("Game Started!");
 
             foreach (EquipInteractable interactable in _spawnedInteractables)
             {
@@ -89,4 +176,10 @@ public class GameManager : MonoBehaviour
             _spawnedInteractables.RemoveAll(interactable => interactable.IsEquipped == false);
         }
     }
+}
+
+public enum GameState
+{
+    ChoosingUpgrade,
+    WaveSpawning
 }

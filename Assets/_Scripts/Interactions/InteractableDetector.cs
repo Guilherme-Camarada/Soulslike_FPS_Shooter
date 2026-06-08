@@ -29,8 +29,6 @@ public class InteractableDetector : MonoBehaviour
                     if (equipInteractable.IsEquipped) return;
                 }
 
-                Debug.Log(_currentLookAtInteractable);
-
                 if (_currentLookAtInteractable == null)
                 {
                     _currentLookAtInteractable = interactable;

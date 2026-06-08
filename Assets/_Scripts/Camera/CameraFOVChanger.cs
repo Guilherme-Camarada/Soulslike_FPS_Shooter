@@ -38,7 +38,6 @@ public class CameraFOVChanger : MonoBehaviour
         {
             if (_cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
             {
-                Debug.Log("Not walking, applying default FOV");
                 ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
             }
         }
@@ -48,12 +47,10 @@ public class CameraFOVChanger : MonoBehaviour
     {
         if (!isSprinting && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
         {
-            Debug.Log("Not sprinting, applying default FOV");
             ApplyFOVChange(_defaultFOV, _sprintFOVChangeDuration, Ease.InOutSine);
         }
         else if (isSprinting && _cinemachineCamera.Lens.FieldOfView < _dashFOV - 1f)
         {
-            Debug.Log("Sprinting, applying sprint FOV");
             ApplyFOVChange(_sprintFOV, _sprintFOVChangeDuration, Ease.InOutSine);
         }
     }
@@ -62,11 +59,9 @@ public class CameraFOVChanger : MonoBehaviour
     {
         if (isDashing)
         {
-            Debug.Log("Dashing, applying dash FOV");
             ApplyFOVChange(_dashFOV, _dashPunchDuration, Ease.InOutSine);
         } else
         {
-            Debug.Log("Finished dashing, applying recovery FOV");
             float targetFOV = _playerMovement.IsSprinting() ? _sprintFOV : _defaultFOV;
             ApplyFOVChange(targetFOV, _dashRecoveryDuration, Ease.InOutSine);
         }
@@ -84,11 +79,6 @@ public class CameraFOVChanger : MonoBehaviour
     {
         _cinemachineCamera.Lens.FieldOfView = _defaultFOV;
         _cinemachineWeaponCamera.Lens.FieldOfView = _defaultFOV;
-    }
-
-    private void Update()
-    {
-        
     }
 
 

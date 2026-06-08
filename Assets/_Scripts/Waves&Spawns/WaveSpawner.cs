@@ -1,36 +1,32 @@
+using DG.Tweening;
+using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
+using Random = UnityEngine.Random;
 
 public class WaveSpawner : MonoBehaviour
 {
+    public event Action OnWaveStartAction;
+    public event Action OnWaveEndAction; 
+
     [SerializeField]
-    private List<WaveData> waves = new();
+    private List<WaveData> _waves = new();
+
+    [SerializeField] private List<Transform> _spawnPoints = new();
+    private List<Damageable> _spawnedEnemies = new();
 
     [ReadOnly]
     [SerializeField]
-    private bool isRunning;
+    private bool _isRunning;
 
     [ReadOnly]
     [SerializeField]
-    private int currentWaveIndex = -1;
+    private int _currentWaveIndex = -1;
 
-    private Coroutine waveRoutine;
+    private Coroutine _waveRoutine;
 
-    // ─────────────────────────────────────────────
-    // START RUN
-    // ─────────────────────────────────────────────
-    [Button("Start Waves")]
-    public void StartWaves()
-    {
-        if (isRunning) return;
-
-        currentWaveIndex = -1;
-        isRunning = true;
-
-        StartNextWave();
-    }
 
     // ─────────────────────────────────────────────
     // NEXT WAVE
@@ -38,22 +34,22 @@ public class WaveSpawner : MonoBehaviour
     [Button("Start Next Wave")]
     public void StartNextWave()
     {
-        if (!isRunning)
-            return;
+        _isRunning = true;
 
-        currentWaveIndex++;
+        _currentWaveIndex++;
 
-        if (currentWaveIndex >= waves.Count)
+        if (_currentWaveIndex >= _waves.Count)
         {
             Debug.Log("You won");
-            isRunning = false;
+            _isRunning = false;
             return;
         }
 
-        if (waveRoutine != null)
-            StopCoroutine(waveRoutine);
+        if (_waveRoutine != null)
+            StopCoroutine(_waveRoutine);
 
-        waveRoutine = StartCoroutine(RunWaveSequence(waves[currentWaveIndex]));
+        _waveRoutine = StartCoroutine(RunWaveSequence(_waves[_currentWaveIndex]));
+        OnWaveStartAction?.Invoke();
     }
 
     // ─────────────────────────────────────────────
@@ -62,11 +58,11 @@ public class WaveSpawner : MonoBehaviour
     [Button("Stop Waves")]
     public void StopWaves()
     {
-        if (waveRoutine != null)
-            StopCoroutine(waveRoutine);
+        if (_waveRoutine != null)
+            StopCoroutine(_waveRoutine);
 
-        isRunning = false;
-        currentWaveIndex = -1;
+        _isRunning = false;
+        _currentWaveIndex = -1;
     }
 
     // ─────────────────────────────────────────────
@@ -74,19 +70,37 @@ public class WaveSpawner : MonoBehaviour
     // ─────────────────────────────────────────────
     private IEnumerator RunWaveSequence(WaveData wave)
     {
-        int waveNumber = currentWaveIndex + 1;
+        int waveNumber = _currentWaveIndex + 1;
 
         Debug.Log($"Wave {waveNumber} started");
 
-        float elapsed = 0f;
+        int deadEnemies = 0;
+        int enemiesToSpawn = wave.WaveTotalSpawns;
 
-        while (elapsed < wave.WaveDuration)
+        for (int i = 0; i < enemiesToSpawn; i++)
         {
-            SpawnEnemy(wave);
+            if (deadEnemies >= wave.WaveEndKillCount)
+            {
+                break;
+            }
+
+            Damageable damageable = SpawnEnemy(wave);
+
+            void OnEnemyDeath(Damageable damageable)
+            {
+                deadEnemies++;
+                _spawnedEnemies.Remove(damageable);
+                damageable.OnDeathAction -= OnEnemyDeath;
+            }
+
+            damageable.OnDeathAction += OnEnemyDeath;
 
             yield return new WaitForSeconds(wave.SpawnCooldown);
-            elapsed += wave.SpawnCooldown;
         }
+
+        yield return new WaitUntil(() => deadEnemies >= wave.WaveEndKillCount);
+
+        OnWaveEndAction?.Invoke();
 
         Debug.Log($"Wave {waveNumber} ended");
 
@@ -96,12 +110,22 @@ public class WaveSpawner : MonoBehaviour
     private void OnWaveFinished()
     {
         // If this was the last wave → win immediately
-        if (currentWaveIndex >= waves.Count - 1)
+        if (_currentWaveIndex >= _waves.Count - 1)
         {
             Debug.Log("You won");
-            isRunning = false;
+            _isRunning = false;
             return;
         }
+
+        foreach (Damageable damageable in _spawnedEnemies)
+        {
+            if (damageable == null) continue;
+
+
+            damageable.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBounce).SetLink(damageable.gameObject).OnComplete(() => Destroy(damageable.gameObject));
+        }
+
+        _spawnedEnemies.Clear();
 
         // Otherwise wait for player input
         Debug.Log("Wave complete. Ready for next wave.");
@@ -110,20 +134,25 @@ public class WaveSpawner : MonoBehaviour
     // ─────────────────────────────────────────────
     // SPAWN LOGIC
     // ─────────────────────────────────────────────
-    private void SpawnEnemy(WaveData wave)
+    private Damageable SpawnEnemy(WaveData wave)
     {
-        if (wave.Enemies.Count == 0 || wave.SpawnPoints.Count == 0)
-            return;
+        Damageable damageable = null;
+
+        if (wave.Enemies.Count == 0 || _spawnPoints.Count == 0)
+            return damageable;
 
         Transform spawnPoint =
-            wave.SpawnPoints[Random.Range(0, wave.SpawnPoints.Count)];
+            _spawnPoints[Random.Range(0, _spawnPoints.Count)];
 
         GameObject prefab = GetWeightedEnemy(wave.Enemies);
 
         if (prefab != null)
         {
-            Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+            damageable = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation).GetComponent<Damageable>();
+            _spawnedEnemies.Add(damageable);
         }
+
+        return damageable;
     }
 
     private GameObject GetWeightedEnemy(List<EnemySpawnEntry> enemies)

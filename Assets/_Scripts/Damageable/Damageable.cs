@@ -1,10 +1,11 @@
+using DG.Tweening;
 using System;
 using UnityEngine;
 
 public class Damageable : MonoBehaviour
 {
     public event Action OnDamageTakenAction;
-    public event Action OnDeathAction;
+    public event Action<Damageable> OnDeathAction;
 
     [SerializeField] private float maxHealth = 100f;
     private float _currentHealth;
@@ -19,20 +20,32 @@ public class Damageable : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
+        _currentHealth -= damageAmount;
+
         if (_currentHealth <= 0)
         {
             Die();
-            OnDeathAction?.Invoke();    
             return;
         }
 
-        _currentHealth -= damageAmount;
         OnDamageTakenAction?.Invoke();
     }
 
     private void Die() 
     {
-        Debug.Log($"{gameObject.name} has died.");
-        Destroy(gameObject);
+        OnDeathAction?.Invoke(this);
+
+        transform.DOKill();
+
+        transform.DOScale(Vector3.zero, 0.5f)
+             .SetEase(Ease.InBounce)
+             .SetLink(gameObject)
+             .OnComplete(() =>
+             {
+                 if (this != null && gameObject != null)
+                 {
+                     Destroy(gameObject);
+                 }
+             });
     }
 }

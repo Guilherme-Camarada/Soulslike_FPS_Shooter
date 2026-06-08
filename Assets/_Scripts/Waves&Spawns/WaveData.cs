@@ -6,15 +6,15 @@ using NaughtyAttributes;
 [Serializable]
 public class WaveData
 {
-    [Min(0.1f)]
-    public float WaveDuration = 20f;
+    [Min(1)]
+    public int WaveEndKillCount = 20;
+
+    [Min(1)]
+    public int WaveTotalSpawns = 30;
 
     [Min(0.1f)]
     public float SpawnCooldown = 1f;
 
     [BoxGroup("Enemies")]
     public List<EnemySpawnEntry> Enemies = new();
-
-    [BoxGroup("Spawn Points")]
-    public List<Transform> SpawnPoints = new();
 }

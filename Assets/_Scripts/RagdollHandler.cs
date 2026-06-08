@@ -28,7 +28,7 @@ public class RagdollHandler : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void Damageable_OnDeath()
+    private void Damageable_OnDeath(Damageable damageable)
     {
         ActivateRagdoll();
     }

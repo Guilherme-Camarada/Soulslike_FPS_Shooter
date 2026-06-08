@@ -33,7 +33,7 @@ public class EnemyAI : MonoBehaviour
         _damageable.OnDeathAction -= Damageable_OnDeath;
     }
 
-    private void Damageable_OnDeath()
+    private void Damageable_OnDeath(Damageable damageable)
     {
         _navMeshAgent.enabled = false;
     }
