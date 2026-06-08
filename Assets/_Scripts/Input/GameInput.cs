@@ -30,11 +30,12 @@ public class GameInput : MonoBehaviour
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
-        } else
-        {
-            Instance = this;
+            return;
         }
 
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        
         _playerInputActions = new PlayerInputActions();
 
         _playerInputActions.Player.Jump.performed += ctx => OnJumpAction?.Invoke();

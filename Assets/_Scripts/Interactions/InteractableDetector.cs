@@ -22,12 +22,14 @@ public class InteractableDetector : MonoBehaviour
     {
         if (Physics.Raycast(_cameraLookAt.position, _cameraLookAt.forward, out RaycastHit hitInfo, interactionRange, _interactionLayerMask))
         {
-            if (hitInfo.collider.TryGetComponent(out Interactable interactable))
+            if (hitInfo.collider.TryGetComponent(out Interactable interactable) && interactable.IsInteractable)
             {
                 if (hitInfo.collider.TryGetComponent(out EquipInteractable equipInteractable))
                 {
                     if (equipInteractable.IsEquipped) return;
                 }
+
+                Debug.Log(_currentLookAtInteractable);
 
                 if (_currentLookAtInteractable == null)
                 {

@@ -19,5 +19,8 @@ public abstract class Interactable : MonoBehaviour
         }
     }
 
+    private bool _isInteractable = true;
+    public bool IsInteractable { get => _isInteractable; set => _isInteractable = value; }
+
     public abstract void Interact(Interactor playerInteractor);
 }

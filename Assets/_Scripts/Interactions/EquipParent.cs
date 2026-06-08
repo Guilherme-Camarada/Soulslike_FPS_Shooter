@@ -7,6 +7,8 @@ public class EquipParent : MonoBehaviour
     public event Action<EquipInteractable, EquipInteractable> OnEquipInteractableChangedAction;
 
     private EquipInteractable _equipInteractable;
+    public EquipInteractable EquipInteractable => _equipInteractable;
+
     [SerializeField] private Transform _equipTargetTransform;
     public Transform EquipTargetTransform => _equipTargetTransform;
 

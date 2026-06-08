@@ -26,6 +26,8 @@ public class EquipInteractable : Interactable
     private bool _isAnimatingEquip;
     public bool IsAnimatingEquip => _isAnimatingEquip;
 
+    private bool _isFloatingAnimationPlaying;
+
     public void SetEquipParent(EquipParent equipParent)
     {
         if (equipParent != null && equipParent.HasEquipInteractable())
@@ -40,6 +42,7 @@ public class EquipInteractable : Interactable
         {
             _equipParent.SetEquipInteractable(this);
             IsEquipped = true;
+            _isFloatingAnimationPlaying = false;
 
             transform.SetParent(equipParent.EquipTargetTransform, true);
             TryGetComponent(out Rigidbody rigidbody);
@@ -48,6 +51,8 @@ public class EquipInteractable : Interactable
             _isAnimatingEquip = true;
 
             float equipDuration = 0.3f;
+
+            transform.DOKill();
 
             Sequence equipSequence = DOTween.Sequence();
 
@@ -61,6 +66,9 @@ public class EquipInteractable : Interactable
         {
             transform.SetParent(null);
             IsEquipped = false;
+
+            transform.DOKill();
+            _isFloatingAnimationPlaying = true;
         }
     }
 
@@ -74,5 +82,26 @@ public class EquipInteractable : Interactable
         {
             Debug.LogError("Interactor does not have an EquipParent component.");
         }
+    }
+
+    private void Update()
+    {
+        HandleUnequipedAnimation();
+    }
+
+    private void HandleUnequipedAnimation()
+    {
+        if (!_isAnimatingEquip && !IsEquipped && !_isFloatingAnimationPlaying)
+        {
+            _isFloatingAnimationPlaying = true;
+
+            transform.DOMove(new Vector3(0, 0.2f, 0), 2f).SetRelative().SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+            transform.DORotate(new Vector3(0, 360f, 0), 3f, RotateMode.FastBeyond360).SetRelative().SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        transform.DOKill();
     }
 }

@@ -19,8 +19,10 @@ public abstract class ShootUsable : Usable
     [SerializeField] private FireMode _weaponFireMode;
     public FireMode WeaponFireMode => _weaponFireMode;
 
-    [SerializeField] private float _fireRateCooldown = 0.4f;
+    [SerializeField] private float _fireRateCooldown = 0.4f;    
+    public float FireRateCooldown { get => _fireRateCooldown; set => _fireRateCooldown = value; }
     [SerializeField] private float _reloadCooldown = 2f;
+    public float ReloadCooldown { get => _reloadCooldown; set => _reloadCooldown = value; }
     [SerializeField] private int _totalAmmo = 15;
 
     [SerializeField] protected Transform _shootOrigin;
@@ -30,11 +32,11 @@ public abstract class ShootUsable : Usable
     private int _currentAmmo;
 
     public int CurrentAmmo => _currentAmmo;
-    public int TotalAmmo => _totalAmmo;
+    public int TotalAmmo { get => _totalAmmo; set => _totalAmmo = value; }
 
     private float _fireCooldownTimer = 0f;
     private float _reloadCooldownTimer = 0f;
-
+     
     private Coroutine _shootingCoroutine;
 
     private void Awake()
