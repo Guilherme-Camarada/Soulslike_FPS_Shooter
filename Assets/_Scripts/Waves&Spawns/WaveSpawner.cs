@@ -9,7 +9,9 @@ using Random = UnityEngine.Random;
 public class WaveSpawner : MonoBehaviour
 {
     public event Action OnWaveStartAction;
-    public event Action OnWaveEndAction; 
+    public event Action OnWaveEndAction;
+
+    [SerializeField] private Transform _enemiesChaseTarget;
 
     [SerializeField]
     private List<WaveData> _waves = new();
@@ -149,6 +151,9 @@ public class WaveSpawner : MonoBehaviour
         if (prefab != null)
         {
             damageable = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation).GetComponent<Damageable>();
+            damageable.TryGetComponent(out FollowAI followAI);
+            followAI.SetChaseTarget(_enemiesChaseTarget);
+
             _spawnedEnemies.Add(damageable);
         }
 
