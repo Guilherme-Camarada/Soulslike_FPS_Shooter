@@ -342,10 +342,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6937991011208974720}
-  - component: {fileID: 2994789209371354737}
   - component: {fileID: 2070894330481800109}
-  - component: {fileID: 4274834171284785056}
+  - component: {fileID: 2994789209371354737}
   - component: {fileID: 3634148273575105970}
+  - component: {fileID: 2291376484041596780}
+  - component: {fileID: -2256488444826841436}
+  - component: {fileID: 8966408900439303948}
   m_Layer: 0
   m_Name: Cuboid
   m_TagString: Untagged
@@ -363,25 +365,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2, y: 2, z: 8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8772925176084825590}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2994789209371354737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7471601113867547751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21ce763533b037b48a39f648f472c71f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Damageable
-  maxHealth: 100
 --- !u!65 &2070894330481800109
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -397,13 +386,13 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4274834171284785056
+--- !u!114 &2994789209371354737
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -412,11 +401,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7471601113867547751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e810e588a350294db726a25865ad0db, type: 3}
+  m_Script: {fileID: 11500000, guid: 21ce763533b037b48a39f648f472c71f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FollowAI
-  _rotationSpeed: 5
-  _chaseSpeed: 4
+  m_EditorClassIdentifier: Assembly-CSharp::Damageable
+  _invicibilityDuration: 0
+  maxHealth: 100
 --- !u!195 &3634148273575105970
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -426,8 +415,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 7471601113867547751}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
+  m_Radius: 0.75
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -435,7 +424,53 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1
   m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 3
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2291376484041596780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471601113867547751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 079bcc95f69e8504dbe0ba051d8186e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AgentLinkMover
+--- !u!114 &-2256488444826841436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471601113867547751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8af600d936ee93a479258bb9007cf112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JumpToTarget
+  _rotationSpeed: 5
+  _chaseSpeed: 4
+  _attackRadius: 5
+  _damage: 10
+  _jumpHeight: 3
+  _jumpDuration: 1
+--- !u!114 &8966408900439303948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471601113867547751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e1e84db900a8d4f87976f7df61c18b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageOnCollision
+  _damageableLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _damage: 10

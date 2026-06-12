@@ -1,11 +1,16 @@
 using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Damageable : MonoBehaviour
 {
     public event Action OnDamageTakenAction;
     public event Action<Damageable> OnDeathAction;
+
+    [SerializeField] private float _invicibilityDuration = 0.5f;
+    private bool _isInvincible;
 
     [SerializeField] private float maxHealth = 100f;
     private float _currentHealth;
@@ -18,8 +23,19 @@ public class Damageable : MonoBehaviour
         _currentHealth = maxHealth;
     }
 
+    private IEnumerator TriggerInvincibility(float duration)
+    {
+        _isInvincible = true;
+
+        yield return new WaitForSeconds(duration);
+
+        _isInvincible = false;
+    }
+
     public void TakeDamage(float damageAmount)
     {
+        if (_isInvincible) return;
+
         _currentHealth -= damageAmount;
 
         if (_currentHealth <= 0)
@@ -27,6 +43,8 @@ public class Damageable : MonoBehaviour
             Die();
             return;
         }
+
+        StartCoroutine(TriggerInvincibility(_invicibilityDuration));
 
         OnDamageTakenAction?.Invoke();
     }

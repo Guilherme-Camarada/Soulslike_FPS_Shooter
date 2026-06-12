@@ -1,9 +1,11 @@
 using DG.Tweening;
 using NaughtyAttributes;
+using PixPlays.ElementalVFX;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class WaveSpawner : MonoBehaviour
@@ -79,28 +81,27 @@ public class WaveSpawner : MonoBehaviour
         int deadEnemies = 0;
         int enemiesToSpawn = wave.WaveTotalSpawns;
 
-        for (int i = 0; i < enemiesToSpawn; i++)
+        while (deadEnemies < wave.WaveEndKillCount)
         {
-            if (deadEnemies >= wave.WaveEndKillCount)
+            if (_spawnedEnemies.Count < enemiesToSpawn)
             {
-                break;
-            }
+                Damageable damageable = SpawnEnemy(wave);
 
-            Damageable damageable = SpawnEnemy(wave);
+                void OnEnemyDeath(Damageable damageable)
+                {
+                    deadEnemies++;
+                    _spawnedEnemies.Remove(damageable);
+                    damageable.OnDeathAction -= OnEnemyDeath;
+                }
 
-            void OnEnemyDeath(Damageable damageable)
+                damageable.OnDeathAction += OnEnemyDeath;
+
+                yield return new WaitForSeconds(wave.SpawnCooldown);
+            } else
             {
-                deadEnemies++;
-                _spawnedEnemies.Remove(damageable);
-                damageable.OnDeathAction -= OnEnemyDeath;
+                yield return null;
             }
-
-            damageable.OnDeathAction += OnEnemyDeath;
-
-            yield return new WaitForSeconds(wave.SpawnCooldown);
         }
-
-        yield return new WaitUntil(() => deadEnemies >= wave.WaveEndKillCount);
 
         OnWaveEndAction?.Invoke();
 
@@ -123,8 +124,16 @@ public class WaveSpawner : MonoBehaviour
         {
             if (damageable == null) continue;
 
+            damageable.TryGetComponent(out EnemyAI enemyAI);
+            enemyAI.enabled = false;
+            damageable.TryGetComponent(out NavMeshAgent navMeshAgent);
+            navMeshAgent.enabled = false;
 
-            damageable.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBounce).SetLink(damageable.gameObject).OnComplete(() => Destroy(damageable.gameObject));
+            damageable.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Linear)
+                .SetLink(damageable.gameObject).OnComplete(() =>
+                {
+                    Destroy(damageable.gameObject);
+                });
         }
 
         _spawnedEnemies.Clear();
@@ -151,8 +160,8 @@ public class WaveSpawner : MonoBehaviour
         if (prefab != null)
         {
             damageable = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation).GetComponent<Damageable>();
-            damageable.TryGetComponent(out FollowAI followAI);
-            followAI.SetChaseTarget(_enemiesChaseTarget);
+            damageable.TryGetComponent(out EnemyAI enemyAI);
+            enemyAI.SetChaseTarget(_enemiesChaseTarget);
 
             _spawnedEnemies.Add(damageable);
         }
