@@ -25,4 +25,14 @@ public class ProjectileShootUsable : ShootUsable
             rigidbody.AddForce(_muzzlePoint.forward * _projectileForce, ForceMode.Impulse);
         }
     }
+
+    public GameObject GetProjectilePrefab()
+    {
+        return _projectilePrefab;
+    }
+
+    public void SetProjectilePrefab(GameObject newProjectile)
+    {
+        _projectilePrefab = newProjectile;
+    }
 }

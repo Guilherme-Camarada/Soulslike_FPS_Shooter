@@ -43,7 +43,7 @@ public abstract class EnemyAI : MonoBehaviour
         _damageable.OnDeathAction -= Damageable_OnDeathAction;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         _navMeshAgent.stoppingDistance = _attackRadius;
     }

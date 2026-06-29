@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5073327322755049367}
   - component: {fileID: 2461919894760532699}
   - component: {fileID: 4532718100932316876}
+  - component: {fileID: 2455679413649695306}
   - component: {fileID: -815395158459407103}
   - component: {fileID: 8138915843389671210}
   - component: {fileID: -3425468580559812287}
@@ -72,6 +73,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
   _invicibilityDuration: 0
   maxHealth: 100
+--- !u!114 &2455679413649695306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6840790825271370445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f41db107535e849936ed9a375bcd3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageableFX
+  _deathSoundData:
+    _audioClip: {fileID: 8300000, guid: 581c2dc5e81cd754f913bc59394f2d0b, type: 3}
+    _mixerGroup: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
+    _loop: 0
+    _playOnAwake: 0
+    _volume: 0.5
+  _hitSoundData:
+    _audioClip: {fileID: 8300000, guid: ca6fe5525ffe166479545e4ca3086835, type: 3}
+    _mixerGroup: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
+    _loop: 0
+    _playOnAwake: 0
+    _volume: 0.7
+  _renderer: {fileID: 5027001040135075535}
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _flashDuration: 0.3
+  _customColorPropertyOverride: _CoreColor
 --- !u!195 &-815395158459407103
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -124,9 +153,10 @@ MonoBehaviour:
   _runAwayDistance: 5
   _fleeSpeed: 6
   _escapePushDistance: 10
-  _projectilePrefab: {fileID: 100000, guid: 735d1d1e5a1d1934589aa44da6a7ea75, type: 3}
-  _projectileTravelDuration: 2
-  _projectileHeight: 2
+  _projectilePrefab: {fileID: 2097471382959828104, guid: eceeb9711f3926649a96bcb14e2cd946, type: 3}
+  _projectileTravelDuration: 0.5
+  _projectileHeight: 0.75
+  _attackCooldown: 3
 --- !u!1 &7262171922244088601
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,7 +598,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: b40be866c7112bb4cbb1737401043bc5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

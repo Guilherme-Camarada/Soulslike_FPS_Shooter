@@ -4,6 +4,7 @@ using PixPlays.ElementalVFX;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -96,11 +97,17 @@ public class WaveSpawner : MonoBehaviour
 
                 damageable.OnDeathAction += OnEnemyDeath;
 
-                yield return new WaitForSeconds(wave.SpawnCooldown);
+                float nextSpawnTime = Time.time + wave.SpawnCooldown;
+
+                yield return new WaitUntil(() =>
+                    Time.time >= nextSpawnTime || deadEnemies >= wave.WaveEndKillCount
+                );
             } else
             {
-                yield return null;
-            }
+                yield return new WaitUntil(() =>
+                _spawnedEnemies.Count < enemiesToSpawn || deadEnemies >= wave.WaveEndKillCount
+            );
+            } 
         }
 
         OnWaveEndAction?.Invoke();
@@ -160,8 +167,16 @@ public class WaveSpawner : MonoBehaviour
         if (prefab != null)
         {
             damageable = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation).GetComponent<Damageable>();
-            damageable.TryGetComponent(out EnemyAI enemyAI);
-            enemyAI.SetChaseTarget(_enemiesChaseTarget);
+
+            Vector3 transformLocalScale = damageable.transform.localScale;
+            damageable.transform.localScale = Vector3.zero;
+
+            damageable.transform.DOScale(transformLocalScale, 0.5f).SetEase(Ease.Linear)
+                .SetLink(damageable.gameObject).OnComplete(() =>
+                {
+                    damageable.TryGetComponent(out EnemyAI enemyAI);
+                    enemyAI.SetChaseTarget(_enemiesChaseTarget);
+                });
 
             _spawnedEnemies.Add(damageable);
         }

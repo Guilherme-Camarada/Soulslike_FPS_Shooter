@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5176882442106997801}
   - component: {fileID: 4761318410502935638}
+  - component: {fileID: 8905135485846685105}
   - component: {fileID: 5798627113838763329}
   - component: {fileID: 4409872435078970433}
   - component: {fileID: -7482533291943081941}
@@ -52,6 +53,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
   _invicibilityDuration: 0
   maxHealth: 100
+--- !u!114 &8905135485846685105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4995411336841568808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f41db107535e849936ed9a375bcd3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageableFX
+  _deathSoundData:
+    _audioClip: {fileID: 8300000, guid: 581c2dc5e81cd754f913bc59394f2d0b, type: 3}
+    _mixerGroup: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
+    _loop: 0
+    _playOnAwake: 0
+    _volume: 0.5
+  _hitSoundData:
+    _audioClip: {fileID: 8300000, guid: ca6fe5525ffe166479545e4ca3086835, type: 3}
+    _mixerGroup: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
+    _loop: 0
+    _playOnAwake: 0
+    _volume: 0.7
+  _renderer: {fileID: 1392528197429468712}
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _flashDuration: 0.3
+  _customColorPropertyOverride: _CoreColor
 --- !u!65 &5798627113838763329
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34181,7 +34210,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: b1ab149abf89ad24cbcbd53c34d24af2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

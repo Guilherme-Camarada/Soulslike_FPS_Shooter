@@ -298,10 +298,10 @@ MeshRenderer:
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 4
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: 6bbd4958a34b1824683b1301e0373575, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -344,6 +344,7 @@ GameObject:
   - component: {fileID: 6937991011208974720}
   - component: {fileID: 2070894330481800109}
   - component: {fileID: 2994789209371354737}
+  - component: {fileID: 4800059848602682303}
   - component: {fileID: 3634148273575105970}
   - component: {fileID: 2291376484041596780}
   - component: {fileID: -2256488444826841436}
@@ -406,6 +407,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
   _invicibilityDuration: 0
   maxHealth: 100
+--- !u!114 &4800059848602682303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471601113867547751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f41db107535e849936ed9a375bcd3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageableFX
+  _deathSoundData:
+    _audioClip: {fileID: 8300000, guid: 581c2dc5e81cd754f913bc59394f2d0b, type: 3}
+    _mixerGroup: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
+    _loop: 0
+    _playOnAwake: 0
+    _volume: 0.5
+  _hitSoundData:
+    _audioClip: {fileID: 8300000, guid: ca6fe5525ffe166479545e4ca3086835, type: 3}
+    _mixerGroup: {fileID: 5860234026820218198, guid: f9fc0ea52505bf448a7fbc4ffb129bda, type: 2}
+    _loop: 0
+    _playOnAwake: 0
+    _volume: 0.7
+  _renderer: {fileID: 7356456635877248298}
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _flashDuration: 0.3
+  _customColorPropertyOverride: 
 --- !u!195 &3634148273575105970
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -454,10 +483,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JumpToTarget
   _rotationSpeed: 5
   _chaseSpeed: 4
-  _attackRadius: 5
-  _damage: 10
-  _jumpHeight: 3
-  _jumpDuration: 1
+  _attackRadius: 4
+  _jumpHeight: 2
+  _jumpDuration: 0.5
 --- !u!114 &8966408900439303948
 MonoBehaviour:
   m_ObjectHideFlags: 0

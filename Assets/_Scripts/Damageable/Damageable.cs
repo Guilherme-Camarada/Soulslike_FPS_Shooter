@@ -56,7 +56,7 @@ public class Damageable : MonoBehaviour
         transform.DOKill();
 
         transform.DOScale(Vector3.zero, 0.5f)
-             .SetEase(Ease.InBounce)
+             .SetEase(Ease.Linear)
              .SetLink(gameObject)
              .OnComplete(() =>
              {
@@ -65,5 +65,25 @@ public class Damageable : MonoBehaviour
                      Destroy(gameObject);
                  }
              });
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public void SetMaxHealth(float newMax)
+    {
+        maxHealth = newMax;
+    }
+
+    public float GetCurrentHealth()
+    {
+        return _currentHealth;
+    }
+
+    public void SetCurrentHealth(float newHealth)
+    {
+        _currentHealth = Mathf.Clamp(newHealth, 0f, maxHealth);
     }
 }

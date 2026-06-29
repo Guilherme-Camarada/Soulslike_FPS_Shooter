@@ -17,7 +17,7 @@ public abstract class ShootUsable : Usable
 
     [Header("Weapon Settings")]
     [SerializeField] private FireMode _weaponFireMode;
-    public FireMode WeaponFireMode => _weaponFireMode;
+    public FireMode WeaponFireMode { get => _weaponFireMode; set => _weaponFireMode = value; }
 
     [SerializeField] private float _fireRateCooldown = 0.4f;    
     public float FireRateCooldown { get => _fireRateCooldown; set => _fireRateCooldown = value; }

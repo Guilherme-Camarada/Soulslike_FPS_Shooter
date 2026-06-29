@@ -217,4 +217,88 @@ public class PlayerMovement : MonoBehaviour
     {
         return _dashCoroutine != null;
     }
+
+    #region Getters and Setters
+
+    public float GetCharacterSpeed()
+    {
+        return _characterSpeed;
+    }
+
+    public void SetCharacterSpeed(float speed)
+    {
+        _characterSpeed = speed;
+    }
+
+    public float GetSprintMultiplier()
+    {
+        return _sprintMultiplier;
+    }
+
+    public void SetSprintMultiplier(float multiplier)
+    {
+        _sprintMultiplier = multiplier;
+    }
+
+    public float GetMaxStamina()
+    {
+        return _maxStamina;
+    }
+
+    public void SetMaxStamina(float stamina)
+    {
+        _maxStamina = stamina;
+    }
+
+    public float GetStaminaRegenRate()
+    {
+        return _staminaRegenRate;
+    }
+
+    public void SetStaminaRegenRate(float regenRate)
+    {
+        _staminaRegenRate = regenRate;
+    }
+
+    public float GetStaminaDashCost()
+    {
+        return _staminaDashCost;
+    }
+
+    public void SetStaminaDashCost(float dashCost)
+    {
+        _staminaDashCost = dashCost;
+    }
+
+    public float GetDashSpeed()
+    {
+        return _dashSpeed;
+    }
+
+    public void SetDashSpeed(float speed)
+    {
+        _dashSpeed = speed;
+    }
+
+    public float GetDashDistance()
+    {
+        return _dashDistance;
+    }
+
+    public void SetDashDistance(float distance)
+    {
+        _dashDistance = distance;
+    }
+
+    public float GetDashCooldown()
+    {
+        return _dashCooldown;
+    }
+
+    public void SetDashCooldown(float cooldown)
+    {
+        _dashCooldown = cooldown;
+    }
+    #endregion
+
 }

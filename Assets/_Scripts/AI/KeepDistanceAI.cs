@@ -1,4 +1,6 @@
 using DG.Tweening;
+using PixPlays.ElementalVFX;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,13 +20,9 @@ public class KeepDistanceAI : EnemyAI
 
     public override void DoAttack()
     {
-        DoRangedAttack(_chaseTarget, _projectileTravelDuration, _projectileHeight);
-
-        DOVirtual.DelayedCall(_attackCooldown, () =>
-        {
-           _isAttacking = false;
-        }).SetLink(gameObject);
+        StartCoroutine(DoRangedAttack(_chaseTarget, _projectileTravelDuration, _projectileHeight));
     }
+
 
     //protected override void Update()
     //{
@@ -62,13 +60,16 @@ public class KeepDistanceAI : EnemyAI
         }
     }
 
-    private void DoRangedAttack(Transform target, float projectileSpeed, float projectileHeight)
+    private IEnumerator DoRangedAttack(Transform target, float projectileSpeed, float projectileHeight)
     {
+        Debug.Log("Doing Ranged Attack");
         GameObject instantiatedProjectile = Instantiate(_projectilePrefab);
         instantiatedProjectile.transform.position = transform.position + Vector3.up * 1f;
         instantiatedProjectile.transform.rotation = transform.rotation;
 
-        instantiatedProjectile.transform.DOJump(target.position, _projectileHeight, 1, _projectileTravelDuration).SetEase(Ease.Linear)
+        instantiatedProjectile.transform.DOJump(target.position, _projectileHeight, 1, _projectileTravelDuration)
+            .SetEase(Ease.Linear)
+            .SetLink(instantiatedProjectile)
             .OnComplete(() =>
             {
                 _navMeshAgent.enabled = true;
@@ -76,5 +77,11 @@ public class KeepDistanceAI : EnemyAI
                 _isChasing = true;
                 Destroy(instantiatedProjectile, 0.15f);
             });
+
+        yield return new WaitForSeconds(_attackCooldown);
+
+        _navMeshAgent.enabled = true;
+        _isAttacking = false;
+        _isChasing = true;
     }
 }

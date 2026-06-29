@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FastOutline
   m_EditorClassIdentifier: Linework::Linework.FastOutline.FastOutline
   m_Active: 1
-  settings: {fileID: 11400000, guid: db1965965d80f3644ac4c24debdccb2e, type: 2}
+  settings: {fileID: 11400000, guid: 92d6ddb91f9256c4bb3c714f087b4061, type: 2}
   shaders:
     mask: {fileID: 4800000, guid: d6efd8a53bb54ff68576b38c066c3134, type: 3}
     outline: {fileID: 4800000, guid: 981392195909457093e91e09efd412a1, type: 3}
