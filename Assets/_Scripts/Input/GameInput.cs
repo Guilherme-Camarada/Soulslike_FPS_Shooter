@@ -25,6 +25,8 @@ public class GameInput : MonoBehaviour
 
     public event Action OnDashAction;
 
+    public event Action OnPauseAction;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -55,6 +57,8 @@ public class GameInput : MonoBehaviour
         _playerInputActions.Player.Sprint.canceled += ctx => OnSprintCancelAction?.Invoke();
 
         _playerInputActions.Player.Dash.performed += ctx => OnDashAction?.Invoke();
+
+        _playerInputActions.Player.Pause.performed += ctx => OnPauseAction?.Invoke();
     }
 
     private void OnEnable()

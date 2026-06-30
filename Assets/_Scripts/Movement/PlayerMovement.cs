@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -238,6 +239,11 @@ public class PlayerMovement : MonoBehaviour
     public void SetSprintMultiplier(float multiplier)
     {
         _sprintMultiplier = multiplier;
+    }
+
+    public float GetCurrentStamina()
+    {
+        return _currentStamina;
     }
 
     public float GetMaxStamina()

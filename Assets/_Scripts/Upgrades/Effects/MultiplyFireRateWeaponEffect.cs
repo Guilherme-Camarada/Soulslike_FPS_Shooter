@@ -32,6 +32,6 @@ public class MultiplyFireRateWeaponEffect : UpgradeEffect
 
     public override string GetDescription()
     {
-        return $"Multiplies the fire rate of the weapon by {_multiplier}.";
+        return $"Multiplies the fire rate of the weapon by {_multiplier * 100}%.";
     }
 }

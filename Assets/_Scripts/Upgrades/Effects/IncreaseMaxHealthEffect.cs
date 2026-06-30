@@ -14,6 +14,7 @@ public class IncreaseMaxHealthEffect : UpgradeEffect
         float newAmount = damageable.MaxHealth + _amount;
 
         damageable.SetMaxHealth(newAmount);
+        damageable.SetCurrentHealth(damageable.GetCurrentHealth() + newAmount);
     }
 
     public override void ExecuteContinuous(UpgradeInventory upgradeInventory)

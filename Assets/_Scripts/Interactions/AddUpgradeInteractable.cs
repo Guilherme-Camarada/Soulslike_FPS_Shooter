@@ -23,6 +23,8 @@ public class AddUpgradeInteractable : Interactable
             upgradeInventory.AddUpgradeEffect(upgradeEffect);
         }
 
+        OnUpgradeAddedAction?.Invoke();
+
         transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBounce).OnComplete(() =>
         {
             Destroy(gameObject);

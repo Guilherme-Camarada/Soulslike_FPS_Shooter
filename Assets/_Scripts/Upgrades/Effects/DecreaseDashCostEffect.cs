@@ -29,6 +29,6 @@ public class DecreaseDashCostEffect : UpgradeEffect
 
     public override string GetDescription()
     {
-        return $"Reduces the dash cost by {_multiplier}%.";
+        return $"Reduces the dash cost by {_multiplier * 100}%.";
     }
 }

@@ -13,6 +13,8 @@ public class PlayerUI : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private Image _healthBarImage;
     [SerializeField] private Image _staminaBarImage;
+    [SerializeField] private TextMeshProUGUI _healthText;
+    [SerializeField] private TextMeshProUGUI _staminaText;
     [SerializeField] private TextMeshProUGUI _ammoText;
 
     [Header("Animation Settings")]
@@ -27,6 +29,8 @@ public class PlayerUI : MonoBehaviour
         _healthBarImage.fillAmount = _playerDamageable.CurrentHealth / _playerDamageable.MaxHealth;
 
         _ammoText.text = "";
+        _healthText.text = _playerDamageable.GetCurrentHealth().ToString("F0");
+        _staminaText.text = _playerMovement.GetCurrentStamina().ToString("F0");
     }
 
     private void OnEnable()
@@ -71,6 +75,7 @@ public class PlayerUI : MonoBehaviour
         float targetFill = _playerMovement.CurrentStamina / _playerMovement.MaxStamina;
         _staminaTween?.Kill();
         _staminaTween = _staminaBarImage.DOFillAmount(targetFill, _staminaTweenDuration).SetEase(Ease.OutSine);
+        _staminaText.text = _playerMovement.GetCurrentStamina().ToString("F1");
     }
 
     private void PlayerDamageable_OnDamageTakenAction()
@@ -78,6 +83,7 @@ public class PlayerUI : MonoBehaviour
         float targetFill = _playerDamageable.CurrentHealth / _playerDamageable.MaxHealth;
         _healthTween?.Kill();
         _healthTween = _healthBarImage.DOFillAmount(targetFill, _healthTweenDuration).SetEase(Ease.OutCubic);
+        _healthText.text = _playerDamageable.GetCurrentHealth().ToString("F1");
     }
 
     private void OnDisable()

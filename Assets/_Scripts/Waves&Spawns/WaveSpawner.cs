@@ -13,6 +13,7 @@ public class WaveSpawner : MonoBehaviour
 {
     public event Action OnWaveStartAction;
     public event Action OnWaveEndAction;
+    public event Action OnLastWaveEndAction;
 
     [SerializeField] private Transform _enemiesChaseTarget;
 
@@ -110,8 +111,6 @@ public class WaveSpawner : MonoBehaviour
             } 
         }
 
-        OnWaveEndAction?.Invoke();
-
         Debug.Log($"Wave {waveNumber} ended");
 
         OnWaveFinished();
@@ -119,14 +118,6 @@ public class WaveSpawner : MonoBehaviour
 
     private void OnWaveFinished()
     {
-        // If this was the last wave → win immediately
-        if (_currentWaveIndex >= _waves.Count - 1)
-        {
-            Debug.Log("You won");
-            _isRunning = false;
-            return;
-        }
-
         foreach (Damageable damageable in _spawnedEnemies)
         {
             if (damageable == null) continue;
@@ -145,7 +136,17 @@ public class WaveSpawner : MonoBehaviour
 
         _spawnedEnemies.Clear();
 
-        // Otherwise wait for player input
+        // If this was the last wave → win immediately
+        if (_currentWaveIndex >= _waves.Count - 1)
+        {
+            Debug.Log("You won");
+            _isRunning = false;
+            OnLastWaveEndAction?.Invoke();
+            return;
+        }
+
+        OnWaveEndAction?.Invoke();
+
         Debug.Log("Wave complete. Ready for next wave.");
     }
 

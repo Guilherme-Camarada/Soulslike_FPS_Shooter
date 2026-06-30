@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public event Action OnGameStartedAction;
+    public event Action<GameState> OnStateChangedAction;
 
     [SerializeField] private WaveSpawner _waveSpawner;
 
@@ -45,7 +46,12 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         _waveSpawner.OnWaveEndAction += WaveSpawner_OnWaveEndAction;
+        _waveSpawner.OnLastWaveEndAction += WaveSpawner_OnLastWaveEndAction;
+    }
 
+    private void WaveSpawner_OnLastWaveEndAction()
+    {
+        HandleStateChange(GameState.GameEnded);
     }
 
     private void WaveSpawner_OnWaveEndAction()
@@ -67,9 +73,14 @@ public class GameManager : MonoBehaviour
         else if (newState == GameState.WaveSpawning)
         {
             _waveSpawner.StartNextWave();
+        } else if (newState == GameState.GameEnded)
+        {
+            Debug.Log("Game Ended");
         }
 
         _gameState = newState;
+
+        OnStateChangedAction?.Invoke(_gameState);
     }
 
     private void SpawnRandomUpgrades(int amount, List<Upgrade> upgradeList)
@@ -181,5 +192,6 @@ public class GameManager : MonoBehaviour
 public enum GameState
 {
     ChoosingUpgrade,
-    WaveSpawning
+    WaveSpawning,
+    GameEnded
 }
