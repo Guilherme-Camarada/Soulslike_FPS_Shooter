@@ -32,7 +32,17 @@ public abstract class ShootUsable : Usable
     private int _currentAmmo;
 
     public int CurrentAmmo => _currentAmmo;
-    public int TotalAmmo { get => _totalAmmo; set => _totalAmmo = value; }
+    public int TotalAmmo
+    {
+        get => _totalAmmo;
+        set
+        {
+            if (_totalAmmo == value) return;
+
+            _totalAmmo = value;
+            OnAmmoChangedAction?.Invoke(CurrentAmmo, _totalAmmo);
+        }
+    }
 
     private float _fireCooldownTimer = 0f;
     private float _reloadCooldownTimer = 0f;

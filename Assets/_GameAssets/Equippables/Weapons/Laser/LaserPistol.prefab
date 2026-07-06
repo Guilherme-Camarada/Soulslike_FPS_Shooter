@@ -449,7 +449,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3515818581499962672, guid: 37d1c9f321427594fb5ba361671506d3, type: 3}
       propertyPath: _weaponFireMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3515818581499962672, guid: 37d1c9f321427594fb5ba361671506d3, type: 3}
       propertyPath: _projectilePrefab

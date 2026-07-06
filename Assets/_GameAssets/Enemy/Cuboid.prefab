@@ -406,7 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
   _invicibilityDuration: 0
-  maxHealth: 100
+  maxHealth: 200
 --- !u!114 &4800059848602682303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,10 +482,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JumpToTarget
   _rotationSpeed: 5
-  _chaseSpeed: 4
-  _attackRadius: 4
+  _chaseSpeed: 5
+  _attackRadius: 3
   _jumpHeight: 2
-  _jumpDuration: 0.5
+  _jumpDuration: 0.35
 --- !u!114 &8966408900439303948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,4 +501,4 @@ MonoBehaviour:
   _damageableLayer:
     serializedVersion: 2
     m_Bits: 512
-  _damage: 10
+  _damage: 25

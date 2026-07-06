@@ -135,5 +135,5 @@ MonoBehaviour:
     _playOnAwake: 0
     _volume: 1
   _hitParticleSystem: {fileID: 0}
-  _damage: 10
+  _damage: 15
   _pierce: 0

@@ -180,6 +180,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2460087354323047440}
     - target: {fileID: 1970521035041035894, guid: a9696dbafa42d6e449624519cee9781c, type: 3}
+      propertyPath: _totalAmmo
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1970521035041035894, guid: a9696dbafa42d6e449624519cee9781c, type: 3}
       propertyPath: _weaponFireMode
       value: 1
       objectReference: {fileID: 0}

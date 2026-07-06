@@ -14,6 +14,7 @@ public class WaveSpawner : MonoBehaviour
     public event Action OnWaveStartAction;
     public event Action OnWaveEndAction;
     public event Action OnLastWaveEndAction;
+    public event Action<int> OnEnemyKilledAction;
 
     [SerializeField] private Transform _enemiesChaseTarget;
 
@@ -94,6 +95,9 @@ public class WaveSpawner : MonoBehaviour
                     deadEnemies++;
                     _spawnedEnemies.Remove(damageable);
                     damageable.OnDeathAction -= OnEnemyDeath;
+
+                    int enemiesLeft = wave.WaveEndKillCount - deadEnemies;
+                    OnEnemyKilledAction?.Invoke(enemiesLeft);
                 }
 
                 damageable.OnDeathAction += OnEnemyDeath;
@@ -128,6 +132,7 @@ public class WaveSpawner : MonoBehaviour
             navMeshAgent.enabled = false;
 
             damageable.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Linear)
+                .SetUpdate(true)
                 .SetLink(damageable.gameObject).OnComplete(() =>
                 {
                     Destroy(damageable.gameObject);
@@ -199,5 +204,12 @@ public class WaveSpawner : MonoBehaviour
         }
 
         return enemies[^1].Prefab;
+    }
+
+    public WaveData GetCurrentWaveData()
+    {
+        if (_currentWaveIndex < 0 || _currentWaveIndex >= _waves.Count)
+            return null;
+        return _waves[_currentWaveIndex];
     }
 }

@@ -1,10 +1,15 @@
 using DG.Tweening;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Android;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
+using Sequence = DG.Tweening.Sequence;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,8 +29,12 @@ public class GameManager : MonoBehaviour
 
     private bool _hasGameStarted;
 
-    private GameState _gameState; 
+    private GameState _gameState;
 
+    [SerializeField] private TextMeshProUGUI _endText;
+    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private Damageable _playerDamageble;
+     
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -35,7 +44,6 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -47,6 +55,13 @@ public class GameManager : MonoBehaviour
     {
         _waveSpawner.OnWaveEndAction += WaveSpawner_OnWaveEndAction;
         _waveSpawner.OnLastWaveEndAction += WaveSpawner_OnLastWaveEndAction;
+        _playerDamageble.OnDeathAction += PlayerDamageble_OnDeathAction;
+    }
+
+    private void PlayerDamageble_OnDeathAction(Damageable obj)
+    {
+        _endText.text = "You could not do it...";
+        HandleStateChange(GameState.GameEnded);
     }
 
     private void WaveSpawner_OnLastWaveEndAction()
@@ -62,10 +77,14 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         _waveSpawner.OnWaveEndAction -= WaveSpawner_OnWaveEndAction;
+        _waveSpawner.OnLastWaveEndAction -= WaveSpawner_OnLastWaveEndAction;
+        _playerDamageble.OnDeathAction -= PlayerDamageble_OnDeathAction;
     }
 
     private void HandleStateChange(GameState newState)
     {
+        if (_gameState == newState) return;
+
         if (newState == GameState.ChoosingUpgrade)
         {
             SpawnRandomUpgrades(_pedestalSpawnPositions.Count, _upgradeList);
@@ -76,11 +95,41 @@ public class GameManager : MonoBehaviour
         } else if (newState == GameState.GameEnded)
         {
             Debug.Log("Game Ended");
+
+            // after X seconds go back to main menu
+            StartCoroutine(ReturnToMainMenuRoutine());
         }
 
         _gameState = newState;
 
         OnStateChangedAction?.Invoke(_gameState);
+    }
+
+    private IEnumerator ReturnToMainMenuRoutine()
+    {
+        yield return new WaitForSecondsRealtime(1.5f);
+        // deactivate player movement and mouse look
+        Time.timeScale = 0f;
+        GameInput.Instance.enabled = false;
+        // show end screen
+        _endText.gameObject.SetActive(true);
+        // 1. Wait for X real-world seconds (ignores Time.timeScale = 0)
+        yield return new WaitForSecondsRealtime(3f);
+
+        // 2. CRITICAL: Reset time scale to normal before changing scenes!
+        // Otherwise, your Main Menu and the next game will start completely paused.
+        Time.timeScale = 1f;
+        GameInput.Instance.enabled = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        _endText.gameObject.SetActive(false);
+
+        // 3. Trigger your SceneController to handle the fade transition
+        if (SceneController.Instance != null)
+        {
+            SceneController.Instance.ChangeScene(0);
+        }
     }
 
     private void SpawnRandomUpgrades(int amount, List<Upgrade> upgradeList)

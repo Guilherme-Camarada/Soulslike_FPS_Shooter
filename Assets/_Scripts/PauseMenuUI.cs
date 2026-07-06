@@ -1,10 +1,12 @@
 using DG.Tweening;
+using System.Security.Cryptography;
 using UnityEditor.Rendering;
 using UnityEngine;
 
 public class PauseMenuUI : MonoBehaviour
 {
     [SerializeField] private GameObject _pauseMenu;
+    [SerializeField] private SoundData _onPauseSoundData;
 
     private bool _isPaused;
 
@@ -32,6 +34,11 @@ public class PauseMenuUI : MonoBehaviour
 
     public void Pause()
     {
+        SoundManager.Instance.CreateSound()
+                .WithSoundData(_onPauseSoundData)
+                .WithRandomPitch()
+                .Play();
+
         _isPaused = true;
 
         _pauseMenu.SetActive(true);
@@ -47,11 +54,31 @@ public class PauseMenuUI : MonoBehaviour
 
     public void Unpause()
     {
+        SoundManager.Instance.CreateSound()
+                .WithSoundData(_onPauseSoundData)
+                .WithRandomPitch()
+                .Play();
+
         _isPaused = false;
         Time.timeScale = 1f;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        _pauseMenu.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.InBounce).SetUpdate(true)
+            .OnComplete(() =>
+            {
+                _pauseMenu.SetActive(false);
+            });
+    }
+
+    public void UnlockAndUnpause()
+    {
+        _isPaused = false;
+        Time.timeScale = 1f;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         _pauseMenu.transform.DOScale(Vector3.zero, 0.25f).SetEase(Ease.InBounce).SetUpdate(true)
             .OnComplete(() =>

@@ -36,7 +36,6 @@ public class GameInput : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
         
         _playerInputActions = new PlayerInputActions();
 
@@ -63,12 +62,18 @@ public class GameInput : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerInputActions.Player.Enable();
+        if (_playerInputActions != null)
+        {
+            _playerInputActions.Player.Enable();
+        }
     }
 
     private void OnDisable()
     {
-        _playerInputActions.Player.Disable();
+        if (_playerInputActions != null)
+        {
+            _playerInputActions.Player.Disable();
+        }
     }
 
     public Vector2 GetMouseScrollInputVector()

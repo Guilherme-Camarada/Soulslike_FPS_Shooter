@@ -10,13 +10,14 @@ public class IncreaseDamageEffect : UpgradeEffect
     {
         upgradeInventory.TryGetComponent(out EquipParent equipParentInteractable);
 
-        ProjectileShootUsable shootUsable = equipParentInteractable.EquipInteractable.GetComponent<ProjectileShootUsable>();
-
-        shootUsable.GetProjectilePrefab().TryGetComponent(out Projectile projectile);
-
-        float newDamage = projectile.GetDamage() + _damageIncrease;
-
-        projectile.SetDamage(newDamage);
+        if (equipParentInteractable.EquipInteractable.TryGetComponent(out ProjectileShootUsable shootUsable))
+        {
+            shootUsable.SetBonusDamage(shootUsable.GetBonusDamage() + _damageIncrease);
+        }
+        else if (equipParentInteractable.EquipInteractable.TryGetComponent(out ProjectileScatterShootUsable scatterUsable))
+        {
+            scatterUsable.SetBonusDamage(scatterUsable.GetBonusDamage() + _damageIncrease);
+        }
     }
 
     public override void ExecuteContinuous(UpgradeInventory upgradeInventory)

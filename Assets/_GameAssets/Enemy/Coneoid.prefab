@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
   _invicibilityDuration: 0
-  maxHealth: 100
+  maxHealth: 50
 --- !u!114 &2455679413649695306
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowAI
   _rotationSpeed: 5
-  _chaseSpeed: 4
+  _chaseSpeed: 6
   _attackRadius: 0
 --- !u!114 &6789571737044824322
 MonoBehaviour:
@@ -166,7 +166,7 @@ MonoBehaviour:
   _damageableLayer:
     serializedVersion: 2
     m_Bits: 512
-  _damage: 5
+  _damage: 10
 --- !u!1 &7479756461258173140
 GameObject:
   m_ObjectHideFlags: 0

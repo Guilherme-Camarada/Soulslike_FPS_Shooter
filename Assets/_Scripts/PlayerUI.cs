@@ -36,8 +36,17 @@ public class PlayerUI : MonoBehaviour
     private void OnEnable()
     {
         _playerDamageable.OnDamageTakenAction += PlayerDamageable_OnDamageTakenAction;
+        _playerDamageable.OnHealthChangedAction += PlayerDamageable_OnHealthChangedAction;
         _playerMovement.OnStaminaChangedAction += PlayerMovement_OnStaminaChangedAction;
         _equipParent.OnEquipInteractableChangedAction += EquipParent_OnEquipInteractableChangedAction;
+    }
+
+    private void PlayerDamageable_OnHealthChangedAction(float value)
+    {
+        float targetFill = _playerDamageable.CurrentHealth / _playerDamageable.MaxHealth;
+        _healthTween?.Kill();
+        _healthTween = _healthBarImage.DOFillAmount(targetFill, _healthTweenDuration).SetEase(Ease.OutCubic);
+        _healthText.text = _playerDamageable.GetCurrentHealth().ToString("F1");
     }
 
     private void EquipParent_OnEquipInteractableChangedAction(EquipInteractable previousEquippable, EquipInteractable currentEquippable)

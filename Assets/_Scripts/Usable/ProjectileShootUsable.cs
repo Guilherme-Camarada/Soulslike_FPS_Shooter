@@ -7,6 +7,8 @@ public class ProjectileShootUsable : ShootUsable
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private float _projectileForce = 500f;
 
+    [SerializeField] private float _bonusDamage = 0f;
+
     public override bool TryShoot()
     {
         if (base.TryShoot())
@@ -19,11 +21,28 @@ public class ProjectileShootUsable : ShootUsable
 
     private void SingleProjectileShot()
     {
-        GameObject projectile = Instantiate(_projectilePrefab, _muzzlePoint.position, _muzzlePoint.rotation);
+        GameObject projectileInstance = Instantiate(_projectilePrefab, _muzzlePoint.position, _muzzlePoint.rotation);
+
+        if (projectileInstance.TryGetComponent(out Projectile projectile))
+        {
+            float totalDamage = projectile.GetDamage() + _bonusDamage;
+            projectile.SetDamage(totalDamage);
+        }
+
         if (projectile.TryGetComponent(out Rigidbody rigidbody))
         {
             rigidbody.AddForce(_muzzlePoint.forward * _projectileForce, ForceMode.Impulse);
         }
+    }
+
+    public void SetBonusDamage(float amount)
+    {
+        _bonusDamage = amount;
+    }
+
+    public float GetBonusDamage()
+    {
+        return _bonusDamage;
     }
 
     public GameObject GetProjectilePrefab()

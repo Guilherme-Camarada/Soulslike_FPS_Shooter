@@ -8,6 +8,7 @@ public class Damageable : MonoBehaviour
 {
     public event Action OnDamageTakenAction;
     public event Action<Damageable> OnDeathAction;
+    public event Action<float> OnHealthChangedAction;
 
     [SerializeField] private float _invicibilityDuration = 0.5f;
     private bool _isInvincible;
@@ -21,6 +22,7 @@ public class Damageable : MonoBehaviour
     private void Awake()
     {
         _currentHealth = maxHealth;
+        OnHealthChangedAction?.Invoke(_currentHealth);
     }
 
     private IEnumerator TriggerInvincibility(float duration)
@@ -37,6 +39,7 @@ public class Damageable : MonoBehaviour
         if (_isInvincible) return;
 
         _currentHealth -= damageAmount;
+        OnHealthChangedAction?.Invoke(_currentHealth);
 
         if (_currentHealth <= 0)
         {
@@ -75,6 +78,7 @@ public class Damageable : MonoBehaviour
     public void SetMaxHealth(float newMax)
     {
         maxHealth = newMax;
+        OnHealthChangedAction?.Invoke(_currentHealth);
     }
 
     public float GetCurrentHealth()
@@ -85,5 +89,6 @@ public class Damageable : MonoBehaviour
     public void SetCurrentHealth(float newHealth)
     {
         _currentHealth = Mathf.Clamp(newHealth, 0f, maxHealth);
+        OnHealthChangedAction?.Invoke(_currentHealth);
     }
 }
